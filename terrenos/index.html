@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.3.1/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.3.1/addons/p5.sound.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  </head>
+  <body>
+    
+    <div id="canvas-container"></div>
+    <div id="pattern-container">
+      <figure id="pattern"></figure>
+    </div>
+    <div id="terrain-controls">
+      <form id="visualization-controls">
+
+        <fieldset class="control-area column-layout resolution-control">
+          <label for="resolution-range">Resolución<strong id="rez-val">12</strong></label>
+          <input id="resolution-range" type="range" min="6" max="15" value="12">
+        </fieldset>
+
+        <fieldset class="control-area column-layout strokeweight-control">
+          <label for="stroke-range">Peso de línea <strong id="stroke-val">1.5</strong></label>
+          <input id="stroke-range" type="range" min="0.5" max="3" value="1.5" step="0.25">
+        </fieldset>
+
+        <fieldset class="control-area pencil-seed-control">
+          <fieldset class="column-layout">
+            <label for="random-seed">Semilla</label>
+            <input id="random-seed" type="number" placeholder="al azar" min="0" >
+          </fieldset>
+          <fieldset class="column-layout">
+            <label for="use-pencil-stroke">Lápiz</label>
+            <div class="switch">
+              <input id="use-pencil-stroke" type="checkbox">
+              <div class="toggle-handle"></div>
+            </div>
+          </fieldset>
+          <fieldset class="column-layout">
+            <label for="use-grid">Grilla</label>
+            <div class="switch">
+              <input id="use-grid" type="checkbox" checked>
+              <div class="toggle-handle"></div>
+            </div>
+          </fieldset>
+        </fieldset>
+
+        <fieldset class="control-area color-controls">
+          <fieldset class="column-layout">
+            <label for="color-bg">Fondo</label>
+            <input id="color-bg" type="color" value="#ffffff">
+          </fieldset>
+          <fieldset class="column-layout">
+            <label for="color-stroke">Trazo</label>
+            <input id="color-stroke" type="color" value="#000000">
+          </fieldset>
+          <fieldset class="column-layout">
+            <label for="color-grid">Grilla</label>
+            <input id="color-grid" type="color" value="#00ffff">
+          </fieldset>
+        </fieldset>
+
+        <fieldset class="control-area button-controls">
+          <button type="button" class="terrain-button" id="run-button" disabled>
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16.7px"
+            height="20.6px" viewBox="-8 0 25 20.6">
+              <polygon class="terra-button-path" points="0,0 0,20.6 16.7,10.3 	"/>
+            </svg>
+          </button>
+          <button type="button" class="terrain-button" id="refresh-button" disabled>
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="29.4px"
+            height="26.9px" viewBox="-1 0 31 26.9">
+              <path class="terra-button-path stroked-button" d="M15.5,10.2l11.5,2.4l2.4-11.5l-2.5-0.5l-1.4,6.7C23.1,2.9,18.5,0,13.4,0C6,0,0,6,0,13.4s6,13.4,13.4,13.4
+              c5.9,0,11.2-4,12.9-9.6l-2.5-0.7c-1.4,4.6-5.6,7.8-10.4,7.8c-6,0-10.8-4.9-10.8-10.8S7.5,2.6,13.4,2.6c4.4,0,8.2,2.6,9.9,6.6
+              L16,7.6L15.5,10.2z"/>
+            </svg>
+          </button>
+          <button type="button" class="terrain-button" onclick="" id="save-button" disabled>
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="23.8px"
+            height="24.7px" viewBox="0 0 23.8 24.7">
+              <polygon class="terra-button-path stroked-button" points="18.5,10.8 12.9,16.4 12.9,0 10.9,0 10.9,16.4 5.2,10.8 3.8,12.3 11.9,20.4 20,12.3 	"/>
+              <rect y="22.4" class="terra-button-path stroked-button" width="23.8" height="2.1"/>
+            </svg>
+
+          </button>
+        </fieldset>
+      </form>  
+
+      <form id="zoom-control">
+
+          <svg class="zoom-icon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="25.53px"
+          height="25.53px" viewBox="0 0 25.53 25.53">
+            <path class="zoom-icon-path" d="M14.64,0C8.63,0,3.76,4.87,3.76,10.89c0,2.57,0.9,4.94,2.39,6.8L0,23.84l1.7,1.7l6.15-6.15c1.86,1.49,4.22,2.39,6.8,2.39
+            c6.01,0,10.89-4.87,10.89-10.89S20.66,0,14.64,0z M14.64,19.37c-4.68,0-8.49-3.81-8.49-8.49S9.97,2.4,14.64,2.4
+            s8.49,3.81,8.49,8.49S19.32,19.37,14.64,19.37z"/>
+            <rect class="zoom-icon-path" x="10.01" y="9.69" width="9.27" height="2.4"/>
+          </svg>
+
+          <input id="zoom-range" type="range" min="0" max="100" value="60">
+
+          <svg class="zoom-icon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="25.53px"
+          height="25.53px" viewBox="0 0 25.53 25.53">
+            <path class="zoom-icon-path" d="M14.65,0C8.63,0,3.76,4.87,3.76,10.89c0,2.57,0.9,4.93,2.39,6.8L0,23.83l1.7,1.7l6.15-6.15c1.86,1.49,4.22,2.39,6.8,2.39
+            c6.01,0,10.89-4.87,10.89-10.89S20.66,0,14.65,0z M14.65,19.37c-4.68,0-8.49-3.81-8.49-8.49S9.97,2.4,14.65,2.4
+            s8.49,3.81,8.49,8.49S19.33,19.37,14.65,19.37z"/>
+            <polygon class="zoom-icon-path" points="15.85,6.25 13.45,6.25 13.45,9.69 10.01,9.69 10.01,12.09 13.45,12.09 13.45,15.52 15.85,15.52 15.85,12.09 
+            19.28,12.09 19.28,9.69 15.85,9.69 	"/>
+          </svg>
+
+      </form>
+    </div>
+      
+
+
+    <svg width="0" height="0">
+      <defs>
+        <filter x="0%" y="0%" width="100%" height="100%" filterUnits="objectBoundingBox" id="roughPaper">
+          <feTurbulence type="fractalNoise" baseFrequency="128" numOctaves="1" result="noise">
+          </feTurbulence>
+          <feDiffuseLighting in="noise" lighting-color="white" surfaceScale="1" result="diffLight">
+      <feDistantLight azimuth="45" elevation="55">
+      </feDistantLight>
+          </feDiffuseLighting>
+          <feGaussianBlur in="diffLight" stdDeviation="0.75" result="dlblur">
+          </feGaussianBlur>
+          <feComposite operator="arithmetic" k1="1.2" k2="0" k3="0" k4="0" in="dlblur" in2="SourceGraphic" result="out">
+          </feComposite>
+        </filter>
+        <filter x="-2%" y="-2%" width="104%" height="104%" filterUnits="objectBoundingBox" id="PencilTexture">
+          <feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="3" result="noise">
+          </feTurbulence>
+          <feDisplacementMap xChannelSelector="R" yChannelSelector="G" scale="3" in="SourceGraphic" result="newSource">
+          </feDisplacementMap>
+        </filter>
+        <filter x="0%" y="0%" width="100%" height="100%" filterUnits="objectBoundingBox" id="pencilTexture2">
+          <feTurbulence type="fractalNoise" baseFrequency="2" numOctaves="5" stitchTiles="stitch" result="f1">
+          </feTurbulence>
+          <feColorMatrix type="matrix" values="0 0 0 0 0, 0 0 0 0 0, 0 0 0 0 0, 0 0 0 -1.5 1.5" result="f2">
+          </feColorMatrix>
+          <feComposite operator="in" in2="f2" in="SourceGraphic" result="f3">
+          </feComposite>
+        </filter>
+        <filter x="0%" y="0%" width="100%" height="100%" filterUnits="objectBoundingBox" id="pencilTexture3">
+          <feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="5" stitchTiles="stitch" result="f1">
+          </feTurbulence>
+          <feColorMatrix type="matrix" values="0 0 0 0 0, 0 0 0 0 0, 0 0 0 0 0, 0 0 0 -1.5 1.5" result="f2">
+          </feColorMatrix>
+          <feComposite operator="in" in2="f2b" in="SourceGraphic" result="f3">
+          </feComposite>
+          <feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="3" result="noise">
+          </feTurbulence>
+          <feDisplacementMap xChannelSelector="R" yChannelSelector="G" scale="2.5" in="f3" result="f4">
+          </feDisplacementMap>
+        </filter>
+        <filter x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox" id="pencilTexture4">
+          <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="3" seed="1" result="f1">
+          </feTurbulence>
+          <feDisplacementMap xChannelSelector="R" yChannelSelector="G" scale="5" in="SourceGraphic" in2="f1" result="f4">
+          </feDisplacementMap>
+          <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="3" seed="10" result="f2">
+          </feTurbulence>
+          <feDisplacementMap xChannelSelector="R" yChannelSelector="G" scale="5" in="SourceGraphic" in2="f2" result="f5">
+          </feDisplacementMap>
+          <feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="2" seed="100" result="f3">
+          </feTurbulence>
+          <feDisplacementMap xChannelSelector="R" yChannelSelector="G" scale="3" in="SourceGraphic" in2="f3" result="f6">
+          </feDisplacementMap>
+          <feBlend mode="multiply" in2="f4" in="f5" result="out1">
+          </feBlend>
+          <feBlend mode="multiply" in="out1" in2="f6" result="out2">
+          </feBlend>
+        </filter>
+      </defs>
+    </svg>
+
+    <script
+			  src="https://code.jquery.com/jquery-3.6.0.min.js"
+			  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+			  crossorigin="anonymous"></script>
+    <script src="js/OpenSimpleNoise.js"></script>
+    <script src="js/graph-paper.js"></script>
+    <script src="js/controls.js"></script>
+    <script src="js/scrollable-terrain.js"></script>
+    <script src="js/terra.js"></script>
+  </body>
+</html>
