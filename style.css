@@ -148,6 +148,7 @@ a {
     text-decoration-thickness: auto;
     text-decoration-thickness: 3px;
     text-underline-offset: 4px;
+    text-decoration-skip-ink: none;
     text-decoration-color: transparent;
     transition: text-decoration-color 0.3s;
     cursor: alias
