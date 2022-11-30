@@ -6,8 +6,8 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
+    <meta name="robots" content="noindex">
+    <title>Terrenos</title>
   </head>
   <body>
     
@@ -19,29 +19,29 @@
       <form id="visualization-controls">
 
         <fieldset class="control-area column-layout resolution-control">
-          <label for="resolution-range">Resolución<strong id="rez-val">12</strong></label>
+          <label for="resolution-range">Size<strong id="rez-val">12</strong></label>
           <input id="resolution-range" type="range" min="6" max="15" value="12">
         </fieldset>
 
         <fieldset class="control-area column-layout strokeweight-control">
-          <label for="stroke-range">Peso de línea <strong id="stroke-val">1.5</strong></label>
+          <label for="stroke-range">Stroke Weight <strong id="stroke-val">1.5</strong></label>
           <input id="stroke-range" type="range" min="0.5" max="3" value="1.5" step="0.25">
         </fieldset>
 
         <fieldset class="control-area pencil-seed-control">
           <fieldset class="column-layout">
-            <label for="random-seed">Semilla</label>
-            <input id="random-seed" type="number" placeholder="al azar" min="0" >
+            <label for="random-seed">Seed</label>
+            <input id="random-seed" type="number" placeholder="random" min="0" >
           </fieldset>
           <fieldset class="column-layout">
-            <label for="use-pencil-stroke">Lápiz</label>
+            <label for="use-pencil-stroke">Pencil</label>
             <div class="switch">
               <input id="use-pencil-stroke" type="checkbox">
               <div class="toggle-handle"></div>
             </div>
           </fieldset>
           <fieldset class="column-layout">
-            <label for="use-grid">Grilla</label>
+            <label for="use-grid">Grid</label>
             <div class="switch">
               <input id="use-grid" type="checkbox" checked>
               <div class="toggle-handle"></div>
@@ -51,15 +51,15 @@
 
         <fieldset class="control-area color-controls">
           <fieldset class="column-layout">
-            <label for="color-bg">Fondo</label>
+            <label for="color-bg">Background</label>
             <input id="color-bg" type="color" value="#ffffff">
           </fieldset>
           <fieldset class="column-layout">
-            <label for="color-stroke">Trazo</label>
+            <label for="color-stroke">Stroke</label>
             <input id="color-stroke" type="color" value="#000000">
           </fieldset>
           <fieldset class="column-layout">
-            <label for="color-grid">Grilla</label>
+            <label for="color-grid">Grid</label>
             <input id="color-grid" type="color" value="#00ffff">
           </fieldset>
         </fieldset>

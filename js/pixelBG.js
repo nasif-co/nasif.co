@@ -19,6 +19,9 @@ function setup() {
   colorPalette = [color(3,162,49), color(255, 91, 31), color(62, 82, 247), color(255, 211, 31), color(255, 191, 218)];
   for (i = 0; i < 5; i++) blobs.push(new Blob(random(maxDiameter, width - maxDiameter), random(maxDiameter, height - maxDiameter), colorPalette[i], i));
   frameRate(20);
+  if(typeof startGsap === "function"){
+    startGsap();
+  }
 }
 
 function draw() {
@@ -79,7 +82,9 @@ class Blob {
     if(this.x + this.r > width && this.xspeed > 0) this.xspeed *= -1;
     if(this.y - this.r < 0 && this.yspeed < 0){
       this.yspeed *= -1;
-      themeMeta.setAttribute('content', colorStrings[this.cnum]);
+      if( document.querySelector( "body.project-page" ) === null ){
+        //themeMeta.setAttribute('content', colorStrings[this.cnum]);
+      }
     } 
     if(this.y + this.r > height && this.yspeed > 0) this.yspeed *= -1;
     //if (this.y + this.r > height || this.y - this.r < 0) this.yspeed *= -1;

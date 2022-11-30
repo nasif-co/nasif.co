@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
 
 <head>
 	<title>nasif.co</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/p5.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/addons/p5.dom.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js"></script>
+	<!-- <script type="text/javascript" src="https://rawgit.com/patriciogonzalezvivo/glslCanvas/master/dist/GlslCanvas.js"></script> -->
 	<link rel="stylesheet" type="text/css" href="style.css">
-	<link rel="stylesheet" href="https://use.typekit.net/vpc5scc.css">
-
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+	<link href="https://fonts.googleapis.com/css2?family=Recursive:wght,CRSV,MONO@300..1000,0,0..1&family=Noto+Color+Emoji&display=block" rel="stylesheet"> 
 	<meta name="description" content="Hola. Me llamo Nasif, soy diseñador de interacción y vivo en Bogotá. Me gusta hacer interfaces, objetos, páginas web, circuitos y código con HTML, CSS, PHP, Javascript, Arduino y Processing.">
 	<meta name=”robots” content=”index, follow”>
 	<link rel="icon" type="image/png" href="favicon.png">
@@ -18,19 +19,120 @@
 </head>
 
 <body>
-	<!-- Running from github! -->
-	<h2>Hola.</h2>
-	<main>
-		<div id="text-content">
-			Me llamo <h1>Nasif</h1>, soy diseñador y me gusta hacer <span id="lo-que-hago" class="animateUnderline">interfaces.</span>
+	<div class="page-container">
+		<header class="homepage-header">
+			<p class="welcome">Hola</p>
+			<div class="main-subtitle">My name is <h1 class="home-title">Nasif</h1>. I'm a designer working with code and technology as a creative medium. Please explore a selection of my work below.</div>
+		</header>
+		<a id="projects"></a>
+		<main class="grid-container">
+			<article class="project-thumbnail thumbnail-type-1">
+				<a href="projects/faculty-website/">
+					<div class="tag web-tag">Web: Design & Dev</div>
+					<div class="grid-project-gallery">
+						<img src="projects/faculty-website/assets/arqdis-thumb-1.png" alt="">
+						<img src="projects/faculty-website/assets/arqdis-thumb-2.jpg" alt="">
+						<img src="projects/faculty-website/assets/arqdis-thumb-3.png" alt="">
+					</div>
+					<h2 class="grid-title">Faculty of Architecture and Design Website</h2>
+					<p class="grid-subtitle">Design & development of the official website for the Faculty of Architecture and Design at Uniandes.</p>
+				</a>
+			</article>
+			<article class="project-thumbnail thumbnail-type-2">
+				<a href="projects/times-to-listen/">
+					<div class="tag physical-computing-tag">Physical Computing</div>
+					<div class="grid-project-gallery">
+						<img src="projects/times-to-listen/assets/rln-thumbnail-1.png" alt="">
+						<img src="projects/times-to-listen/assets/rln-thumbnail-2.png" alt="">
+						<img src="projects/times-to-listen/assets/rln-thumbnail-3.jpg" alt="">
+					</div>
+					<h2 class="grid-title">Times to listen</h2>
+					<p class="grid-subtitle">An exhibition of interactive textiles that narrate the testimonies of the women that sewed them.</p>
+				</a>
+			</article>
+			<article class="project-thumbnail thumbnail-type-2">
+				<a href="projects/asterism/">
+					<div class="tag physical-computing-tag">Physical Computing</div>
+					<div class="grid-project-gallery">
+						<img src="projects/asterism/assets/asterism-thumb-1.png" alt="">
+						<img src="projects/asterism/assets/asterism-thumb-2.png" alt="">
+						<img src="projects/asterism/assets/asterism-thumb-3.gif" alt="">
+					</div>
+					<h2 class="grid-title">Asterism</h2>
+					<p class="grid-subtitle">A public lighting system and interface designed to encourage sharing.</p>
+				</a>
+			</article>
+			<article class="project-thumbnail thumbnail-type-3">
+				<a href="projects/how-far-is-outer-space/">
+					<div class="tag visual-computing-tag">Visual Computing</div>
+					<div class="grid-project-gallery">
+						<img src="projects/how-far-is-outer-space/assets/meteoritos-thumb-1.png" alt="">
+						<img src="projects/how-far-is-outer-space/assets/meteoritos-thumb-2.jpg" alt="">
+						<img src="projects/how-far-is-outer-space/assets/meteoritos-thumb-3.jpg" alt="">
+					</div>
+					<h2 class="grid-title">How far is outer space?</h2>
+					<p class="grid-subtitle">An interactive data visualization that displays more than 44k meteorites that have fallen on earth.</p>
+				</a>
+			</article>
+			<article class="project-thumbnail thumbnail-type-1">
+				<a href="projects/proa/">
+					<div class="tag physical-computing-tag">Physical Computing</div>
+					<div class="grid-project-gallery">
+						<img src="projects/proa/assets/proa-thumb-1.png" alt="">
+						<img src="projects/proa/assets/proa-thumb-2.png" alt="">
+						<img src="projects/proa/assets/proa-thumb-3.png" alt="">
+					</div>
+					<h2 class="grid-title">Communicating photography in PROA</h2>
+					<p class="grid-subtitle">Interactive exhibition piece aimed at communicating academic research findings to a broader audience.</p>
+				</a>
+			</article>
+			<article class="project-thumbnail thumbnail-type-4">
+				<a href="projects/web-literacy/">
+					<div class="tag teaching-tag">Teaching</div>
+					<div class="grid-project-gallery">
+						<img src="projects/web-literacy/assets/weblit-thumbnail-1.jpg" alt="">
+						<img src="projects/web-literacy/assets/weblit-thumbnail-2.png" alt="">
+						<img src="projects/web-literacy/assets/weblit-thumbnail-3.png" alt="">
+					</div>
+					<h2 class="grid-title">Web Literacy</h2>
+					<p class="grid-subtitle">An undergraduate design course at Universidad de los Andes that covers HTML, CSS, JS and explores designing for online media.</p>
+				</a>
+			</article>
+			<article class="project-thumbnail thumbnail-type-1">
+				<a href="projects/terrenos/">
+					<div class="tag visual-computing-tag">Visual Computing</div>
+					<div class="grid-project-gallery">
+						<img src="projects/terrenos/assets/terrenos-thumb-1.png" alt="">
+						<img src="projects/terrenos/assets/terrenos-thumb-2.jpg" alt="">
+						<img src="projects/terrenos/assets/terrenos-thumb-3.png" alt="">
+					</div>
+					<h2 class="grid-title">Terrenos<span style="opacity: 0.4; font-size: 0.6em;"> (Working Title)</span></h2>
+					<p class="grid-subtitle">A tool for creating speculative terrain maps using data logged during hikes. Ongoing project.</p>
+				</a>
+			</article>
+		</main>
+	</div>
+	<footer>
+		<div class="footer-wrapper">
+			<address>
+                <span class="address-city">Bogotá, Colombia</span>
+                <a class="address-home" href="/"><span>nasif.co</span></a>
+				<a href="https://www.instagram.com/nasif.co/" target="_blank" class="address-contact"><span>Instagram</span></a>
+			</address>
+			<button onclick="window.scrollTo({ top: 0, behavior:'smooth'});" class="nav-button back-to-top"><span>Go back up</span><span class="up-arrow-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20.86 127.2">
+				<g>
+					<line class="up-arrow" x1="10.41" y1="230.47" x2="10.41" y2="105.27"/>
+					<polyline class="up-arrow" points=".7 114.99 10.42 105.27 20.14 114.99"/>
+				</g>
+			  </svg></span></button>
 		</div>
-		<address>
-			<img src="assts/long-arrow.svg">
-			<span>¡Escríbeme a mi <a href="https://www.instagram.com/nasif.co/" target="_blank">instagram</a>!</span>
-		</address>
-	</main>
+	</footer>
+	
 	<script src="js/pixelBG.js"></script>
-	<script src="js/loquehago.js"></script>
+	<script src="js/scrollObserver.js"></script>
+	
+	<!-- <canvas class="glslCanvas" id="glslbg"></canvas>
+	<script src="js/circlesShader.js"></script> -->
 </body>
 
 </html>

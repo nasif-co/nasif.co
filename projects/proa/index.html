@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+	<title>Communicating photography in PROA</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/p5.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/addons/p5.dom.min.js"></script>
+    <!-- <script type="text/javascript" src="https://rawgit.com/patriciogonzalezvivo/glslCanvas/master/dist/GlslCanvas.js"></script> -->
+	<link rel="stylesheet" type="text/css" href="../../style.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+	<link href="https://fonts.googleapis.com/css2?family=Recursive:wght,CRSV,MONO@300..1000,0,0..1&family=Noto+Color+Emoji&display=block" rel="stylesheet"> 
+	<meta name="description" content="Prototypes and development of interactive exhibition piece aimed at communicating architectural academic research findings to a broader audience.">
+	<meta name="robots" content="noindex">
+	<link rel="icon" type="image/png" href="../../favicon.png">
+	<meta name="theme-color" content="#ffffff">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="utf-8" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.13.3/css/OverlayScrollbars.min.css" integrity="sha512-Xd88BFhCPQY5aAt2W3F5FmTVKkubVsAZDJBo7aXPRc5mwIPTEJvNeqbvBWfNKd4IEu3v9ots+nTdsTzVynlaOw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.13.3/js/OverlayScrollbars.min.js" integrity="sha512-Ae2SccSxoNp/Cn7PIlowLk8cmVyyW5aSCbrB/k08h/yYeK3zrNJ/oAJf8RK/ZD95G8KjkzPIXxKbeYPn43KC0w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+</head>
+
+<body class="project-page">
+    <div class="project-gallery-wrapper">
+        <div class="project-gallery" >
+            <figure class="video-container-16-9">
+                <script src="https://fast.wistia.com/embed/medias/k6hqtohkmp.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><div class="wistia_embed wistia_async_k6hqtohkmp seo=false videoFoam=true" style="height:100%;position:relative;width:100%">&nbsp;</div></div></div>
+                <figcaption><span>Video demo of the exhibition piece and its interactive experience.</span></figcaption>
+            </figure>
+            <figure>
+                <img src="assets/camera-front.jpg" alt="Front view of the camera-like-device">
+                <figcaption><span>Front view of the camera-like device.</span></figcaption>
+            </figure>
+            <figure>
+                <img src="assets/camera-back.jpg" alt="Back view of the camera-like-device">
+                <figcaption><span>Back view of the camera-like-device.</span></figcaption>
+            </figure>
+            <figure>
+                <img src="assets/mqtt-device.jpg" alt="Close-up of the device receiving the zoom potentiometer">
+                <figcaption><span>Close-up of the device receiving both the zoom potentiometer input and the digital compass data. These were then sent to the phone through mqtt.</span></figcaption>
+            </figure>
+            <figure>
+                <img src="assets/inside-view.jpg" alt="View inside the device">
+                <figcaption><span>View inside the device.</span></figcaption>
+            </figure>
+            <figure>
+                <img src="assets/building-shot.jpg" alt="Photo taken inside the VR experience">
+                <figcaption><span>Photo taken inside the VR experience.</span></figcaption>
+            </figure>
+            <figure>
+                <img src="assets/book-page.jpg" alt="One page of the projects article">
+                <figcaption><span>One spread of the project's article.</span></figcaption>
+            </figure>
+            <figure>
+                <img src="assets/building-model.jpg" alt="">
+                <figcaption><span>Modelling the initial 3D version of the Ecopetrol building. Original plans were to swap this model for a higher quality one before the exhibition took place.</span></figcaption>
+            </figure>
+            <figure>
+                <img src="assets/prototyping.jpg" alt="Prototyping the device with cardboard">
+                <figcaption><span>Prototyping the device shape, form and structure with cardboard. Also testing the connection between the external electronics and the phone.</span></figcaption>
+            </figure>
+            <figure>
+                <img src="assets/process.jpg" alt="Putting together the device">
+                <figcaption><span>Putting together the 3D printed and wooden parts of the device.</span></figcaption>
+            </figure>
+        </div>
+    </div>
+	<div class="page-container">
+        <main class="project-info">
+            <h1 class="project-title">Communicating photography in PROA</h1>
+            <div class="project-text">
+                <section>
+                    <h2 class="project-subtitle">About the project</h2>
+                    <p>The research project "Mensajes de modernidad en la revista PROA" brought together researchers at Universidad de los Andes to study the <strong>impact that advertisements in PROA (the main architectural magazine in 20th century Colombia) had in defining the construction of modern Bogotá</strong>. Together with professor <a href="http://jaimepatarroyo.com/" target="_blank" rel="noopener noreferrer">Jaime Patarroyo</a>, we worked on <strong>ways to share the findings of this research to a broader audience</strong>, through the use of interactive exhibition pieces.</p>
+                    <p>One our prototypes sought to communicate the role of the photographer, and the impact that his chosen compositions had on how the public perceived a building through its images. To do so, we developed a camera-like device that allowed visitors to take photos of a VR building. They could move, pan and zoom to compose their photo as they desired. All of these photos were meant to be printed and displayed together, <strong>showcasing the many ways one building can be perceived and how the photographer's eye plays a key role.</strong></p>
+                    <p>Other prototypes were developed with students in Prof. Patarroyo's "Interactive Environments" design course. However, the exhibition was never realized due to lack of funding.</p>
+                </section>
+            </div>
+            <aside class="project-skills">
+                <h2 class="project-subtitle">Tools & skills</h2>
+                <p><span class="skill-tag">Interaction Design</span><span class="skill-tag">Arduino</span><span class="skill-tag">Electronics</span><span class="skill-tag">3D Modelling</span><span class="skill-tag">3D Printing</span><span class="skill-tag">VR</span><span class="skill-tag">Processing</span><span class="skill-tag">Woodwork</span></p>
+            </aside>
+            <aside class="project-links">
+                <h2 class="project-subtitle">Links</h2>
+                <ul>
+                    <li><a href="assets/disenando-experiencias-interactivas-para-la-exposicion.pdf" target="_blank" data-tippy-content="Complete article written by Prof. Jaime Patarroyo & me regarding this development. Published in the main research project's book."><span><span>Academic article on the project</span></span></a></li>
+                    <li><a href="https://ediciones.uniandes.edu.co/library/publication/mensajes-de-modernidad-en-la-revista-proa-publicidad-en-contenidos-y-pauta-1946-1962" target="_blank" data-tippy-content="Link to the main research project's book of which this project was a part of."><span><span>Complete research project book</span></span></a></li>
+                    <li><a href="https://youtu.be/90qXZBB6PHU?t=1930" target="_blank" data-tippy-content="A snippet of the virtual book launch. See 32:10 - 36:10."><span><span>Short video presentation of the project and its article</span></span></a></li>
+                </ul>
+            </aside>
+        </main>
+	</div>
+    <div class="return-button">
+        <a class="nav-button" href="../../#projects"><span class="left-arrow-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 126.62 20.86"><g>
+            <line class="left-arrow" x1="550.03" y1="10.44" x2="104.83" y2="10.44"/>
+            <polyline class="left-arrow" points="114.55 20.15 104.83 10.43 114.55 .71"/>
+        </g></svg></span><span>Return to project list</span></a>
+    </div>
+	<footer>
+		<div class="footer-wrapper">
+			<address>
+                <span class="address-city">Bogotá, Colombia</span>
+                <a class="address-home" href="/"><span>nasif.co</span></a>
+				<a href="https://www.instagram.com/nasif.co/" target="_blank" class="address-contact"><span>Instagram</span></a>
+			</address>
+			<button onclick="window.scrollTo({ top: 0, behavior:'smooth'});" class="nav-button back-to-top"><span>Go back up</span><span class="up-arrow-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20.86 127.2">
+				<g>
+					<line class="up-arrow" x1="10.41" y1="230.47" x2="10.41" y2="105.27"/>
+					<polyline class="up-arrow" points=".7 114.99 10.42 105.27 20.14 114.99"/>
+				</g>
+			  </svg></span></button>
+		</div>
+	</footer>
+	
+	<script src="../../js/pixelBG.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dragscroll/0.0.8/dragscroll.min.js" integrity="sha512-/ncZdOhQm5pgj5KHy720Ck7XF5RzYK6rtUsLNnGcitXrKT3wUYzTrPlOSG7SdL2kDzkuLEOFvrQRyllcZkeAlg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="../js/customScrollbars.js"></script>
+
+    <!-- <canvas id="glslbg" data-fragment-url="assets/circles.frag" width="100%" height="100%"></canvas> -->
+</body>
+
+</html>

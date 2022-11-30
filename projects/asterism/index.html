@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+	<title>Asterism</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/p5.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/addons/p5.dom.min.js"></script>
+    <!-- <script type="text/javascript" src="https://rawgit.com/patriciogonzalezvivo/glslCanvas/master/dist/GlslCanvas.js"></script> -->
+	<link rel="stylesheet" type="text/css" href="../../style.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+	<link href="https://fonts.googleapis.com/css2?family=Recursive:wght,CRSV,MONO@300..1000,0,0..1&family=Noto+Color+Emoji&display=block" rel="stylesheet"> 
+	<meta name="description" content="Asterism is a public lighting system and interface designed to encourage sharing control of lighting.">
+	<meta name="robots" content="noindex">
+	<link rel="icon" type="image/png" href="../../favicon.png">
+	<meta name="theme-color" content="#ffffff">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="utf-8" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.13.3/css/OverlayScrollbars.min.css" integrity="sha512-Xd88BFhCPQY5aAt2W3F5FmTVKkubVsAZDJBo7aXPRc5mwIPTEJvNeqbvBWfNKd4IEu3v9ots+nTdsTzVynlaOw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.13.3/js/OverlayScrollbars.min.js" integrity="sha512-Ae2SccSxoNp/Cn7PIlowLk8cmVyyW5aSCbrB/k08h/yYeK3zrNJ/oAJf8RK/ZD95G8KjkzPIXxKbeYPn43KC0w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+</head>
+
+<body class="project-page">
+    <div class="project-gallery-wrapper">
+        <div class="project-gallery" >
+            <figure class="video-container-23-18">
+                <script src="https://fast.wistia.com/embed/medias/jgty9kqd4c.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><div class="wistia_responsive_padding" style="padding:78.13% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><div class="wistia_embed wistia_async_jgty9kqd4c seo=false videoFoam=true" style="height:100%;position:relative;width:100%">&nbsp;</div></div></div>
+            </figure>
+            <figure class="video-container-16-9">
+                <script src="https://fast.wistia.com/embed/medias/1ri1oficp5.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><div class="wistia_embed wistia_async_1ri1oficp5 seo=false videoFoam=true" style="height:100%;position:relative;width:100%"><div class="wistia_swatch" style="height:100%;left:0;opacity:0;overflow:hidden;position:absolute;top:0;transition:opacity 200ms;width:100%;"><img src="https://fast.wistia.com/embed/medias/1ri1oficp5/swatch" style="filter:blur(5px);height:100%;object-fit:contain;width:100%;" alt="" aria-hidden="true" onload="this.parentNode.style.opacity=1;" /></div></div></div></div>
+                <figcaption><span>Asterism light-object movement.</span></figcaption>
+            </figure>
+            <figure>
+                <img src="assets/soldering.png" alt="">
+                <figcaption><span>Soldering the controller circuits.</span></figcaption>
+            </figure>
+            <figure class="video-container-16-9">
+                <script src="https://fast.wistia.com/embed/medias/1rwno46wff.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;"><div class="wistia_embed wistia_async_1rwno46wff seo=false videoFoam=true" style="height:100%;position:relative;width:100%"><div class="wistia_swatch" style="height:100%;left:0;opacity:0;overflow:hidden;position:absolute;top:0;transition:opacity 200ms;width:100%;"><img src="https://fast.wistia.com/embed/medias/1rwno46wff/swatch" style="filter:blur(5px);height:100%;object-fit:contain;width:100%;" alt="" aria-hidden="true" onload="this.parentNode.style.opacity=1;" /></div></div></div></div>
+                <figcaption><span>Connection and synchronized motion of all slider controllers.</span></figcaption>
+            </figure>
+            <figure>
+                <img src="assets/initial-enclosure-design.png" alt="">
+                <figcaption><span>Initial controller enclosure design based on an analysis of the housing cooperative's architecture. Discarded when the project shifted away from being a permanent installation at the coop.</span></figcaption>
+            </figure>
+            <figure>
+                <img src="assets/enclosure-prototype.png" alt="">
+                <figcaption><span>First and only enclosure prototype based on the design of the previous image.</span></figcaption>
+            </figure>
+        </div>
+    </div>
+	<div class="page-container">
+        <main class="project-info">
+            <h1 class="project-title">Asterism</h1>
+            <div class="project-text">
+                <section>
+                    <h2 class="project-subtitle">About the project</h2>
+                    <p>Asterism is an interactive lighting system developed in the context of a housing cooperative located in Québec City. Following the spirit of the cooperative, <strong>the system was designed to allow sharing the lights in a tangible manner.</strong> It consists of a continuous array of light bulbs, of which only three adjacent bulbs "hold" the light at any given moment.</p>
+                    <p>Each resident had access to their own slider controller to choose which area was illuminated. However, because all of these controllers were wirelessly connected, moving one slider moved all other sliders simultaenously, simulating the experience of sharing one controller. This <strong>allowed the tangible and social nuances of sharing</strong> (fighting, asking for permission etc... ) <strong>to be experienced with an intangible phenomenon: light.</strong></p>
+                    <p>The project was developed as part of my residency at <a href="http://insertio.com/en/" target="_blank" rel="noopener noreferrer">Insertio</a>, a Québec-based research laboratory which studies interactive architecture through ubiquitous computing. The work was done under the guidance of professor and lead researcher <a href="http://jamespartaik.ca/" target="_blank" rel="noopener noreferrer">James Partaik</a>. Although the project was tested in situ, it was not permanently installed in the coop.</p>
+                </section>
+            </div>
+            <aside class="project-skills">
+                <h2 class="project-subtitle">Tools & skills</h2>
+                <p><span class="skill-tag">Interaction Design</span><span class="skill-tag">Arduino</span><span class="skill-tag">XBee</span><span class="skill-tag">Electronics</span><span class="skill-tag">Node.js</span><span class="skill-tag">RF Networks</span></p>
+            </aside>
+            <aside class="project-links">
+                <h2 class="project-subtitle">Links</h2>
+                <ul>
+                    <li><a href="http://insertio.com/en/" target="_blank"><span><span>Insertio research laboratory</span></span></a></li>
+                </ul>
+            </aside>
+        </main>
+	</div>
+    <div class="return-button">
+        <a class="nav-button" href="../../#projects"><span class="left-arrow-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 126.62 20.86"><g>
+            <line class="left-arrow" x1="550.03" y1="10.44" x2="104.83" y2="10.44"/>
+            <polyline class="left-arrow" points="114.55 20.15 104.83 10.43 114.55 .71"/>
+        </g></svg></span><span>Return to project list</span></a>
+    </div>
+	<footer>
+		<div class="footer-wrapper">
+			<address>
+                <span class="address-city">Bogotá, Colombia</span>
+                <a class="address-home" href="/"><span>nasif.co</span></a>
+				<a href="https://www.instagram.com/nasif.co/" target="_blank" class="address-contact"><span>Instagram</span></a>
+			</address>
+			<button onclick="window.scrollTo({ top: 0, behavior:'smooth'});" class="nav-button back-to-top"><span>Go back up</span><span class="up-arrow-container"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20.86 127.2">
+				<g>
+					<line class="up-arrow" x1="10.41" y1="230.47" x2="10.41" y2="105.27"/>
+					<polyline class="up-arrow" points=".7 114.99 10.42 105.27 20.14 114.99"/>
+				</g>
+			  </svg></span></button>
+		</div>
+	</footer>
+	
+	<script src="../../js/pixelBG.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dragscroll/0.0.8/dragscroll.min.js" integrity="sha512-/ncZdOhQm5pgj5KHy720Ck7XF5RzYK6rtUsLNnGcitXrKT3wUYzTrPlOSG7SdL2kDzkuLEOFvrQRyllcZkeAlg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="../js/customScrollbars.js"></script>
+
+    <!-- <canvas id="glslbg" data-fragment-url="assets/circles.frag" width="100%" height="100%"></canvas> -->
+</body>
+
+</html>
