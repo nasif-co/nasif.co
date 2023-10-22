@@ -407,9 +407,13 @@ address > *:not(:last-child) {
     transition: filter 1s, opacity 0.5s;
 }
 
+#p5bg.start-blurry {
+    transition: unset;
+}
+
 #p5bg.blurry {
-    filter: blur(2.5vw);
-    opacity: 0.3;
+    /* filter: blur(2.5vw); */
+    opacity: 0.15;
 }
 
 h1.home-title {
@@ -844,8 +848,8 @@ main.grid-container.not-multiple-of-3::after{
 
 .project-page #p5bg{
     transition: none;
-    filter: blur( 2.5vw );
-    opacity: 0.2;
+    /* filter: blur( 2.5vw ); */
+    opacity: 0.15;
 }
 
 .project-gallery-wrapper{

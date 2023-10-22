@@ -57,6 +57,9 @@ function initScrollObserver() {
     if( document.querySelector('.project-thumbnail').getBoundingClientRect().bottom < window.innerHeight ){
         if( document.querySelector('#p5bg') !== null ){
             document.querySelector('#p5bg').classList.add('blurry');
+            if( typeof maxAlphaTarget != undefined) {
+                maxAlphaTarget = 0;
+            }
         }
     }
     scrollObserver = new IntersectionObserver(handleIntersection, {
@@ -83,6 +86,9 @@ function handleIntersection(entries) {
             if( entry.target.matches('.project-thumbnail:first-child') ){
                 if( document.querySelector('#p5bg') !== null ){
                     document.querySelector('#p5bg').classList.add('blurry');
+                    if( typeof maxAlphaTarget != undefined) {
+                        maxAlphaTarget = 0;
+                    }
                 }
             }
 
@@ -90,6 +96,10 @@ function handleIntersection(entries) {
             if( entry.target.matches('h1') ){
                 if( document.querySelector('#p5bg') !== null ){
                     document.querySelector('#p5bg').classList.remove('blurry');
+                    document.querySelector('#p5bg').classList.remove('start-blurry');
+                    if( typeof maxAlphaTarget != undefined) {
+                        maxAlphaTarget = 255;
+                    }
                 }
             }
 
@@ -103,6 +113,20 @@ function handleIntersection(entries) {
                 if( document.querySelector('.main-subtitle').getBoundingClientRect().top > 0 ){
                     if( document.querySelector('#p5bg') !== null ){
                         document.querySelector('#p5bg').classList.remove('blurry');
+                        document.querySelector('#p5bg').classList.remove('start-blurry');
+                        if( typeof maxAlphaTarget != undefined) {
+                            maxAlphaTarget = 255;
+                        }
+                    }
+                }
+            }
+
+            //blur bg
+            if( entry.target.matches('h1') ){
+                if( document.querySelector('#p5bg') !== null ){
+                    document.querySelector('#p5bg').classList.add('blurry');
+                    if( typeof maxAlphaTarget != undefined) {
+                        maxAlphaTarget = 0;
                     }
                 }
             }

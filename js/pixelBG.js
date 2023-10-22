@@ -5,6 +5,9 @@ var pixelSize = null;
 var maxDiameter = null;
 var colorStrings = ['#03a230', '#ff5b1f', '#3e51f7', '#ffd21f', '#ffbfda'];
 
+var maxAlpha = 255;
+var maxAlphaTarget = 255;
+
 var themeMeta = document.querySelector('meta[name=theme-color]');
 
 function setup() {
@@ -19,8 +22,16 @@ function setup() {
   colorPalette = [color(3,162,49), color(255, 91, 31), color(62, 82, 247), color(255, 211, 31), color(255, 191, 218)];
   for (i = 0; i < 5; i++) blobs.push(new Blob(random(maxDiameter, width - maxDiameter), random(maxDiameter, height - maxDiameter), colorPalette[i], i));
   frameRate(20);
-  if(typeof startGsap === "function"){
-    startGsap();
+
+  //Initialize the background in blurry mode
+  if(document.querySelector('.project-page') != null || ( document.querySelector('.project-thumbnail') != null && document.querySelector('.project-thumbnail').getBoundingClientRect().bottom < window.innerHeight)) {
+    maxAlpha = 0;
+    maxAlphaTarget = 0;
+  }
+
+  if( document.querySelector('.project-thumbnail') != null && document.querySelector('.project-thumbnail').getBoundingClientRect().bottom < window.innerHeight) {
+    cnv.class('blurry');
+    cnv.class('start-blurry');
   }
 }
 
@@ -40,7 +51,7 @@ function draw() {
         let d = sqrt((xdif * xdif) + (ydif * ydif));
         pixColor = blobs[i].color;
         sum = 10 * blobs[i].r / d;
-        pixColor.setAlpha(map(sum, 7, 15, 0, 255)); //change the first two values to tweak pixel antialiasing cutoff (lower values on the first = blocky-er blobs)
+        pixColor.setAlpha(map(sum, 7, 15, 0, maxAlpha)); //change the first two values to tweak pixel antialiasing cutoff (lower values on the first = blocky-er blobs)
         if (alpha(pixColor) > 20) {
           fill(pixColor);
           noStroke();
@@ -54,6 +65,23 @@ function draw() {
   for (i = 0; i < blobs.length; i++) {
     blobs[i].update();
     //blobs[i].show();
+    if( maxAlpha < 255){
+      blobs[i].blur();
+    }
+  }
+
+  if(maxAlpha != maxAlphaTarget) {
+    if(maxAlphaTarget > maxAlpha) {
+      maxAlpha += 20;
+      if(maxAlpha > maxAlphaTarget) {
+        maxAlpha = maxAlphaTarget;
+      }
+    }else{
+      maxAlpha -= 20;
+      if(maxAlpha < 0) {
+        maxAlpha = 0;
+      }
+    }
   }
 }
 
@@ -97,6 +125,12 @@ class Blob {
     ellipse(this.x, this.y, this.r * 2, this.r * 2);
   }
 
+  blur() {
+    noStroke();
+    radialGradient( this.x, this.y, this.r*0.5, this.x, this.y, this.r*1.4, color(red(this.color), green(this.color), blue(this.color), 255 - maxAlpha), color(red(this.color), green(this.color), blue(this.color), 0));
+    ellipse(this.x, this.y, this.r * 3, this.r * 3);
+  }
+
   resize() {
     this.r = pixelSize * this.rMultiplier;
   }
@@ -107,4 +141,14 @@ function windowResized() {
   pixelSize = round(width / 40);
   maxDiameter = pixelSize * 5;
   for (i = 0; i < 3; i++) blobs[i].resize();
+}
+
+function radialGradient(sX, sY, sR, eX, eY, eR, colorS, colorE){
+  let gradient = drawingContext.createRadialGradient(
+    sX, sY, sR, eX, eY, eR
+  );
+  gradient.addColorStop(0, colorS);
+  gradient.addColorStop(1, colorE);
+
+  drawingContext.fillStyle = gradient;
 }
