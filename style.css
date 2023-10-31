@@ -365,6 +365,23 @@ address > *:not(:last-child) {
     text-decoration-skip-ink: none;
 }
 
+.footer-attributions {
+    margin-top: 1.5em;
+    opacity: 0.5;
+    max-width: calc( var(--max-width) - var(--side-pad)*2 );
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.footer-attributions,
+.footer-attributions a {
+    font-size: var(--fz-10pt);
+}
+
+.footer-attributions a {
+    text-decoration: underline;
+}
+
 @media screen and (max-width: 440px) {
     .footer-wrapper {
         flex-direction: column;
@@ -413,7 +430,7 @@ address > *:not(:last-child) {
 
 #p5bg.blurry {
     /* filter: blur(2.5vw); */
-    opacity: 0.15;
+    opacity: 0.20;
 }
 
 h1.home-title {
@@ -427,7 +444,7 @@ h1.home-title {
 }
 
 .homepage-header {
-    min-height: 90vh;
+    min-height: 80vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -849,7 +866,7 @@ main.grid-container.not-multiple-of-3::after{
 .project-page #p5bg{
     transition: none;
     /* filter: blur( 2.5vw ); */
-    opacity: 0.15;
+    opacity: 0.20;
 }
 
 .project-gallery-wrapper{
@@ -916,6 +933,12 @@ figure.video-container-10-9{
     width: calc(var(--p-gallery-height)*1.11);
 }
 
+figure.video-container-4-3{
+    /* 1200x900 */
+    width: calc(var(--p-gallery-height)*1.3333);
+    overflow: hidden;
+}
+
 figure.video-container-10-6{
     /* 1230x900 */
     width: calc(var(--p-gallery-height)*1.37);
@@ -928,12 +951,34 @@ figure.video-container-16-9{
     overflow: hidden;
 }
 
+figure.video-container-731-450{
+    width: calc(var(--p-gallery-height)*1.624);
+    overflow: hidden;
+}
+
 figure.video-container-23-18{
     /* 1920x1080 */
     width: calc(var(--p-gallery-height)*1.28);
     overflow: hidden;
 }
 
+figure.video-container-59-45{
+    /* 1180x900 */
+    width: calc(var(--p-gallery-height)*1.31);
+}
+
+figure.video-container-1-1{
+    /* 900x900 */
+    width: calc(var(--p-gallery-height));
+}
+
+figure[class*="video-container"] iframe[src*=".cloudflarestream.com/"] {
+    pointer-events: none;
+}
+
+figure video {
+    width: 100%;
+}
 
 figure[class*="video-container"] .w-bottom-bar-left,
 figure[class*="video-container"] .w-bottom-bar-middle,
