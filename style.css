@@ -367,7 +367,7 @@ address > *:not(:last-child) {
 
 .footer-attributions {
     margin-top: 1.5em;
-    opacity: 0.5;
+    opacity: 0.6;
     max-width: calc( var(--max-width) - var(--side-pad)*2 );
     margin-left: auto;
     margin-right: auto;
