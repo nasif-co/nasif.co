@@ -97,7 +97,7 @@ const safetyMargin = 0;
 
 
 //Make true to see debugging view
-let debugging = true;
+let debugging = false;
 
 //Make mountains with the mouse or with ml5
 const mode = 'body'; //Either 'mouse' or 'body'
