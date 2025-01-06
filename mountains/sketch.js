@@ -33,10 +33,10 @@ let historySize = 35;
 let lastMountainWasIdle = true;
 
 //How wide is the peak of each mountain
-const mountainPeakWidth = Math.round(0.025*window.innerWidth); //20
+let mountainPeakWidth = Math.round(0.025*window.innerWidth); //20
 
 //How wide is the base of each mountain
-const mountainBaseWidth =  Math.round(0.20*window.innerWidth); //200
+let mountainBaseWidth =  Math.round(0.20*window.innerWidth); //200
 
 //Define the maximum height of the mountain
 let peakHeightPercent = 0.6
@@ -559,4 +559,9 @@ function windowResized() {
   }
   video.size(width, height);
   maxMountainHeight = window.innerHeight*peakHeightPercent;
+  //How wide is the peak of each mountain
+  mountainPeakWidth = Math.round(0.025*window.innerWidth); //20
+  
+  //How wide is the base of each mountain
+  mountainBaseWidth =  Math.round(0.20*window.innerWidth); //200
 }
