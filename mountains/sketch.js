@@ -33,10 +33,10 @@ let historySize = 35;
 let lastMountainWasIdle = true;
 
 //How wide is the peak of each mountain
-const mountainPeakWidth = 20;
+const mountainPeakWidth = Math.round(0.025*window.innerWidth); //20
 
 //How wide is the base of each mountain
-const mountainBaseWidth = 200;
+const mountainBaseWidth =  Math.round(0.20*window.innerWidth); //200
 
 //Define the maximum height of the mountain
 let peakHeightPercent = 0.6
@@ -182,10 +182,6 @@ function setup() {
         initializeCamera(cameras[0].deviceId);
       }
     });
-    //video = createCapture({ flipped: true, video: true, audio: false });
-    //video.size(windowWidth, windowHeight);
-    //video.hide();
-    //bodyPose.detectStart(video, gotPoses);
   }).catch((err) => {
     console.error('Permission denied or error:', err);
     alert('Camera permission is required to access cameras.');
@@ -230,11 +226,6 @@ function createDropdown() {
     const selectedDeviceId = dropdown.value();
     initializeCamera(selectedDeviceId);
   });
-
-  // dropdown.changed(() => {
-  //   const selectedDeviceId = dropdown.value();
-  //   initializeCamera(selectedDeviceId);
-  // });
 }
 
 function initializeCamera(deviceId) {
@@ -262,6 +253,9 @@ function draw() {
       centers = [mouseX];
     }
   }
+
+  //Avoid showing the land under the mountain when taking the snapshot
+  translate(0, mountainGap);
 
   //Guides the animation cycles
   const animationPlayhead = (frameCount%framesToRecord/framesToRecord);
@@ -315,8 +309,8 @@ function draw() {
         //if we did just i, it would start at the bottom edge, where new mountains start
       }
     }
-    vertex(width * 2, height*2);
-    vertex(0, height*2);
+    vertex(window.innerWidth * 2, window.innerHeight*2);
+    vertex(0, window.innerHeight*2);
     endShape(CLOSE);
   }
 
@@ -369,9 +363,9 @@ function draw() {
     //a noise value is subtracted to create a terrain. This terrain is 
     //multiplied by the base value, which raises it depending on the position
     //of each person 
-    let y = height - noise(i * 0.005 + noiseTime) * base;
+    let y = window.innerHeight - noise(i * 0.005 + noiseTime) * base;
     //Finally, this calculated y is amplified to be more visible
-    y = map(y, height, height - defaultPeakMultiplier, height - 1, height - maxMountainHeight);
+    y = map(y, window.innerHeight, window.innerHeight - defaultPeakMultiplier, window.innerHeight - 1, window.innerHeight - maxMountainHeight);
 
     //Smoothing of the mountain height:
 
@@ -403,10 +397,10 @@ function draw() {
     let scaler = easeInOutCubic(map(constrain(animationPlayhead, terraformStart, terraformComplete), terraformStart, terraformComplete, 0, 1));
     
     //Draw the current mountain's vertex that was just calculated
-    vertex(pointList[i], (currentMountain[i].y - height)*scaler + height + displayOffset);
+    vertex(pointList[i], (currentMountain[i].y - window.innerHeight)*scaler + window.innerHeight + displayOffset);
   }
-  vertex(width * 2, height*2);
-  vertex(0, height*2);
+  vertex(window.innerWidth * 2, window.innerHeight*2);
+  vertex(0, window.innerHeight*2);
   endShape(CLOSE);
 
   if (frameCount % framesToRecord == 0) {
@@ -434,6 +428,9 @@ function keyReleased() {
     }else {
       window.debugger.classList.remove('debug-on');
     }
+  }else if (key === 'f') {
+    let fs = fullscreen();
+    fullscreen(!fs);
   }
 }
 
@@ -441,7 +438,7 @@ function setHorizontalPoints() {
   noiseTime += 1;
   pointList = [];
   for (let i = 0; i < points; i++) {
-    pointList[i] = noise(i * 2 + noiseTime) * width;
+    pointList[i] = noise(i * 2 + noiseTime) * window.innerWidth;
   }
   pointList = pointList.concat(basePoints);
   pointList.sort(function (a, b) {
@@ -463,22 +460,7 @@ function gotPoses(results) {
       person.left_eye.confidence > globalConfidence) {
       center = person.nose.x;
     } 
-    // else if (
-    //   person.right_eye.confidence > globalConfidence &&
-    //   person.left_eye.confidence > globalConfidence
-    // ) {
-    //   const person_span = person.right_eye.x - person.left_eye.x;
-    //   center = person.left_eye.x + person_span / 2;
-    // } 
-    // else if (
-    //   person.right_shoulder.confidence > globalConfidence &&
-    //   person.left_shoulder.confidence > globalConfidence
-    // ) {
-    //   const person_span = person.right_shoulder.x - person.left_shoulder.x;
-    //   center = person.left_shoulder.x + person_span / 2;
-    // }
-
-    if (center !== false && center > safetyMargin && center < width - safetyMargin) {
+    if (center !== false && center > safetyMargin && center < window.innerWidth - safetyMargin) {
       centers.push(center);
     }
   }
@@ -489,14 +471,14 @@ function showDebugger() {
   stroke('lime');
   strokeWeight(1);
   for (let j = 0; j < centers.length; j++) {
-    line(centers[j],0, centers[j], height);
+    line(centers[j],0, centers[j], window.innerHeight);
   }
 
   //Draw the safety margins
   fill(252, 223, 3, 100);
   noStroke();
-  rect(0,0, safetyMargin, height);
-  rect(width - safetyMargin,0, safetyMargin, height);
+  rect(0,0, safetyMargin, window.innerHeight);
+  rect(window.innerWidth - safetyMargin,0, safetyMargin, window.innerHeight);
 
   //Show fps for debugging
   fpsDisplay.textContent = round(frameRate());
@@ -568,4 +550,13 @@ function defaultConstants() {
   localStorage.removeItem('peakSize');
 
   window.location.reload();
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  for (let i = 1; i <= maxPoints; i++) {
+    basePoints[i - 1] = ((i - 1) * width) / maxPoints;
+  }
+  video.size(width, height);
+  maxMountainHeight = window.innerHeight*peakHeightPercent;
 }
