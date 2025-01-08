@@ -143,7 +143,7 @@ function preload() {
 function setup() {
   //Set colors
   historyColorStart = color("rgb(0, 12, 177)");
-  historyColorEnd = color("rgb(255, 248, 242)");
+  historyColorEnd = color("rgb(255,248,242)");
   snapshotColor = color('white');
   currentColor = color("rgb(0, 12, 177)");
   activeColor = color("rgb(0, 9, 129)");
@@ -277,7 +277,7 @@ function draw() {
   //Guides the animation cycles
   const animationPlayhead = (frameCount%framesToRecord/framesToRecord);
   
-  background(historyColorEnd);
+  background(fogColor);
   strokeWeight(8);
   
   /* --------------------------------------------------------------
@@ -333,7 +333,7 @@ function draw() {
     endShape(CLOSE);
 
     /* Fog between mountains */
-    let maxFogHeight = height*0.5;
+    let maxFogHeight = height*0.6;
     let fogHeight = lerp((maxFogHeight/historySize)*(i-1), (maxFogHeight/historySize)*(i), animationPlayhead);
 
     let mountainBaseY = height - mountainGap*(i+1) - mountainGap*animationPlayhead;
@@ -621,11 +621,11 @@ function windowResized() {
 }
 
 //Close app on hitting the esc key
-// document.addEventListener('keydown', (event) => {
-//   if (event.key === 'Escape') {
-//       window.close(); // Close the window (triggers app quit)
-//   }
-// });
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+      window.close(); // Close the window (triggers app quit)
+  }
+});
 
 
 function linearGradient(sX, sY, eX, eY, colorS, colorE){
