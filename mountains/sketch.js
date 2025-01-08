@@ -50,6 +50,9 @@ const defaultPeakMultiplier = 1;
 //Used in the dynamic multiplier algorithm. How much shorter to make the plains.
 const plainsMultiplier = -0.2;
 
+//Replaces the plains multiplier when nobody is in front
+let idleMultiplier = 0.2;
+
 //This value gets updated instantly when new users are detected.
 let targetPeakMultiplier = defaultPeakMultiplier;
 
@@ -395,6 +398,11 @@ function draw() {
     //Set the base, the texture of the terrain with no mountains
     let base = plainsMultiplier;
 
+    //When no users are around, use the idle multiplier instead
+    if(centers.length == 0) {
+      base = idleMultiplier;
+    }
+
     //Go through each person
     centers.forEach(center => {
       //Calculate how much to raise the current point vertically,
@@ -444,8 +452,20 @@ function draw() {
       displayOffset = map(animationPlayhead, 0, terraformComplete, mountainGap, -mountainGap*terraformComplete);
     }
 
+    //If its the frame when the mountain records, draw the mountain
+    //at its last offset position
+    if(frameCount%framesToRecord == 0) {
+      displayOffset = -mountainGap;
+    }
+
     let scaler = easeInOutCubic(map(constrain(animationPlayhead, terraformStart, terraformComplete), terraformStart, terraformComplete, 0, 1));
     
+    //If its the frame where the mountain records, make sure it is
+    //fully scaled
+    if(frameCount%framesToRecord == 0) {
+      scaler = 1;
+    }
+
     //Draw the current mountain's vertex that was just calculated
     vertex(pointList[i], (currentMountain[i].y - window.innerHeight)*scaler + window.innerHeight + displayOffset);
   }
