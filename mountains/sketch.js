@@ -140,7 +140,7 @@ defaultsButton.addEventListener('click', defaultConstants);
 function preload() {
   if(mode == 'body'){
     // Load the bodyPose model
-    bodyPose = ml5.bodyPose({ flipped: true });
+    bodyPose = ml5.bodyPose({ flipped: false });
   }
 }
 
