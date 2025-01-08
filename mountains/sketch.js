@@ -32,11 +32,13 @@ let historySize = 35;
 //Whether the last mountain added to the history came from a user or from idle movement
 let lastMountainWasIdle = true;
 
-//How wide is the peak of each mountain
-let mountainPeakWidth = Math.round(0.025*window.innerWidth); //20
-
 //How wide is the base of each mountain
-let mountainBaseWidth =  Math.round(0.20*window.innerWidth); //200
+let baseWidthRatio = 0.20;
+let mountainBaseWidth =  Math.round(baseWidthRatio*window.innerWidth); //200
+
+//How wide is the peak of each mountain
+let peakWidthRatio = baseWidthRatio*0.125; //0.025
+let mountainPeakWidth = Math.round(peakWidthRatio*window.innerWidth); //20
 
 //Define the maximum height of the mountain
 let peakHeightPercent = 0.6
@@ -77,6 +79,9 @@ let historyColorStart;
 let historyColorEnd;
 let currentColor;
 let snapshotColor;
+let activeColor;
+let fogColor;
+let fogColorTransparent;
 
 //Camera input
 let video;
@@ -112,6 +117,8 @@ const gapsize = window.gap;
 gapsize.addEventListener('change', updateConstants);
 const peaksize = window.peaks;
 peaksize.addEventListener('change', updateConstants);
+const mountWidth = window.mountwidth;
+mountWidth.addEventListener('change', updateConstants);
 
 const closeButton = window.debugclose;
 closeButton.addEventListener('click', function() {
@@ -135,11 +142,13 @@ function preload() {
 
 function setup() {
   //Set colors
-  historyColorStart = color("rgb(82, 93, 247)");
-  historyColorEnd = color('white');
+  historyColorStart = color("rgb(0, 12, 177)");
+  historyColorEnd = color("rgb(255, 248, 242)");
   snapshotColor = color('white');
-  currentColor = color('blue');
-
+  currentColor = color("rgb(0, 12, 177)");
+  activeColor = color("rgb(0, 9, 129)");
+  fogColor = color(255,248,242);
+  fogColorTransparent = color(255,248,242, 0);
 
   //Get saved constants from localStorage
   if(localStorage.getItem("historySize") !== null) {
@@ -162,6 +171,14 @@ function setup() {
     maxMountainHeight = window.innerHeight*peakHeightPercent;
   }
   peaksize.value = peakHeightPercent;
+
+  if(localStorage.getItem("mountWidth") !== null) {
+    baseWidthRatio = parseFloat(localStorage.getItem("mountWidth"));
+    peakWidthRatio = baseWidthRatio*0.125;
+    mountainBaseWidth =  Math.round(baseWidthRatio*window.innerWidth);
+    mountainPeakWidth = Math.round(peakWidthRatio*window.innerWidth);
+  }
+  mountWidth.value = baseWidthRatio;
 
 
   const p5canvas = createCanvas(windowWidth, windowHeight);
@@ -260,14 +277,16 @@ function draw() {
   //Guides the animation cycles
   const animationPlayhead = (frameCount%framesToRecord/framesToRecord);
   
-  background("white");
+  background(historyColorEnd);
   strokeWeight(8);
   
   /* --------------------------------------------------------------
   * History
   * -------------------------------------------------------------*/
   
-  for (let i = mountains.length - 1; i >= 0; i--) {
+  //mountains.length - 2 because the last one is usually fully covered by fog
+  //so we don't render it.
+  for (let i = mountains.length - 2; i >= 0; i--) {
     //In this cycle of animation, what color does this mountain start with
     let colorStart = lerpColor(historyColorStart, historyColorEnd, i/(historySize - 1));
     //In this cycle of animation, what color does this mountain end with
@@ -312,6 +331,27 @@ function draw() {
     vertex(window.innerWidth * 2, window.innerHeight*2);
     vertex(0, window.innerHeight*2);
     endShape(CLOSE);
+
+    /* Fog between mountains */
+    let maxFogHeight = height*0.5;
+    let fogHeight = lerp((maxFogHeight/historySize)*(i-1), (maxFogHeight/historySize)*(i), animationPlayhead);
+
+    let mountainBaseY = height - mountainGap*(i+1) - mountainGap*animationPlayhead;
+
+    if (frameCount % framesToRecord == 0) {
+      mountainBaseY = height - mountainGap*(i+2);
+      fogHeight = (maxFogHeight/historySize)*(i);
+    }
+
+    linearGradient(
+      0, mountainBaseY + height*0.1, 0, mountainBaseY - fogHeight,
+      fogColor,
+      fogColorTransparent,
+    );
+    
+    noStroke();
+    rect(0, mountainBaseY - fogHeight, width, height*2);
+    fill(0);
   }
 
   /* --------------------------------------------------------------
@@ -328,9 +368,9 @@ function draw() {
 
   peakMultiplier += peakAdjustmentSpeed;
 
-  let targetColor = color('blue');
+  let targetColor = activeColor;
   if(centers.length == 0) {
-    targetColor = color("rgb(82, 93, 247)");
+    targetColor = historyColorStart;
   }
 
   currentColor = lerpColor(currentColor, targetColor, 0.2);
@@ -530,6 +570,18 @@ function updateConstants(e) {
         resetButton.disabled = false;
       }
       break;
+    case 'mountwidth':
+      var val = parseFloat(elmnt.value);
+      //validate
+      if( !isNaN(val) && val >= 0.01 && val <= 0.95){
+        baseWidthRatio = val;
+        peakWidthRatio = baseWidthRatio*0.125;
+        mountainBaseWidth =  Math.round(baseWidthRatio*window.innerWidth);
+        mountainPeakWidth = Math.round(peakWidthRatio*window.innerWidth);
+        saveButton.disabled = false;
+        resetButton.disabled = false;
+      }
+      break;
   }
 }
 
@@ -538,6 +590,7 @@ function saveConstants() {
   localStorage.setItem("cycleLength", framesToRecord);
   localStorage.setItem("gapSize", mountainGap);
   localStorage.setItem("peakSize", peakHeightPercent); 
+  localStorage.setItem("mountWidth", baseWidthRatio); 
 
   saveButton.disabled = true;
   resetButton.disabled = true;
@@ -548,6 +601,7 @@ function defaultConstants() {
   localStorage.removeItem('cycleLength');
   localStorage.removeItem('gapSize');
   localStorage.removeItem('peakSize');
+  localStorage.removeItem("mountWidth"); 
 
   window.location.reload();
 }
@@ -560,8 +614,26 @@ function windowResized() {
   video.size(width, height);
   maxMountainHeight = window.innerHeight*peakHeightPercent;
   //How wide is the peak of each mountain
-  mountainPeakWidth = Math.round(0.025*window.innerWidth); //20
+  mountainPeakWidth = Math.round(peakWidthRatio*window.innerWidth); //20
   
   //How wide is the base of each mountain
-  mountainBaseWidth =  Math.round(0.20*window.innerWidth); //200
+  mountainBaseWidth =  Math.round(baseWidthRatio*window.innerWidth); //200
+}
+
+//Close app on hitting the esc key
+// document.addEventListener('keydown', (event) => {
+//   if (event.key === 'Escape') {
+//       window.close(); // Close the window (triggers app quit)
+//   }
+// });
+
+
+function linearGradient(sX, sY, eX, eY, colorS, colorE){
+  let gradient = drawingContext.createLinearGradient(
+    sX, sY, eX, eY
+  );
+  gradient.addColorStop(0, colorS);
+  gradient.addColorStop(1, colorE);
+  drawingContext.fillStyle = gradient;
+  // drawingContext.strokeStyle = gradient;
 }
