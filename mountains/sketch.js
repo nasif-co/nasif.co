@@ -108,7 +108,7 @@ const safetyMargin = 0;
 let debugging = false;
 
 //Make mountains with the mouse or with ml5
-const mode = 'body'; //Either 'mouse' or 'body'
+let mode = 'body'; //Either 'mouse' or 'body'
 
 //Connect with debugger ui
 const fpsDisplay = window.fpsdisplay;
@@ -127,9 +127,14 @@ pxdensity.addEventListener('change', updateConstants);
 
 let pixelDense = 1;
 
+const sketchmode = window.mousemode;
+sketchmode.addEventListener('change', updateConstants);
+
 const closeButton = window.debugclose;
 closeButton.addEventListener('click', function() {
-  debugging = false
+  debugging = false;
+  mode = 'body';
+  sketchmode.checked = false;
   localStorage.setItem('debugging', debugging);
   window.debugger.classList.remove('debug-on');
 });
@@ -141,21 +146,25 @@ const defaultsButton = window.defaultconstants;
 defaultsButton.addEventListener('click', defaultConstants);
 
 function preload() {
-  if(mode == 'body'){
+  //if(mode == 'body'){
     // Load the bodyPose model
     bodyPose = ml5.bodyPose({ flipped: true });
-  }
+  //}
 }
 
 function setup() {
-  //Set colors
-  historyColorStart = color("rgb(0, 12, 177)");
-  historyColorEnd = color("rgb(255,248,242)");
+  //Set base colors
+  fogColor = color(250, 239, 228);
+  historyColorStart = color("rgb(0, 9, 141)");
+  activeColor = color("rgb(0, 6, 90)");
+  
+  //Calculated colors
+  historyColorEnd = color(red(fogColor), green(fogColor), blue(fogColor));
+  fogColorTransparent = color(red(fogColor), green(fogColor), blue(fogColor));
+  fogColorTransparent.setAlpha(0);
+  currentColor = color(red(historyColorStart), green(historyColorStart), blue(historyColorStart));
   snapshotColor = color('white');
-  currentColor = color("rgb(0, 12, 177)");
-  activeColor = color("rgb(0, 9, 129)");
-  fogColor = color(255,248,242);
-  fogColorTransparent = color(255,248,242, 0);
+  
 
   //Get saved constants from localStorage
   if(localStorage.getItem("historySize") !== null) {
@@ -202,7 +211,7 @@ function setup() {
   }
   setHorizontalPoints();
 
-  if(mode == 'body'){
+  //if(mode == 'body'){
     requestCameraPermission().then(() => {
     navigator.mediaDevices.enumerateDevices().then((devices) => {
       cameras = devices.filter(device => device.kind === 'videoinput');
@@ -216,7 +225,7 @@ function setup() {
     console.error('Permission denied or error:', err);
     alert('Camera permission is required to access cameras.');
   });
-  }
+  //}
 
   
 
@@ -492,6 +501,8 @@ function keyReleased() {
     saveCanvas();
   }else if (key === 'd') {
     debugging = !debugging;
+    mode = 'body';
+    sketchmode.checked = false;
     localStorage.setItem('debugging', debugging);
     if(debugging) {
       window.debugger.classList.add('debug-on');
@@ -620,6 +631,13 @@ function updateConstants(e) {
           pixelDensity(pixelDense);
           saveButton.disabled = false;
           resetButton.disabled = false;
+        }
+        break;
+      case 'mousemode':
+        if( elmnt.checked ){
+          mode = 'mouse';
+        }else {
+          mode = 'body';
         }
         break;
   }

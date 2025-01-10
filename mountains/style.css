@@ -119,3 +119,13 @@ label[for=camerapicker] select {
   background-color: transparent;
   text-overflow: ellipsis;
 }
+
+label[for=mousemode] {
+  flex-direction: row;
+  align-items: center;
+}
+
+label[for=mousemode] input {
+  flex-shrink: 1;
+  width: auto;
+}
