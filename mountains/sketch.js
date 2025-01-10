@@ -6,10 +6,10 @@
 let basePoints = [];
 
 //How many basepoints to generate;
-const maxPoints = 300;
+const maxPoints = 150;
 
 //How many generative horizontal points to generate in each layer
-const points = 300;
+const points = 150;
 
 //Array that holds all the horizontal points of the current layer,
 //including both the basePoints and randomly generated ones
