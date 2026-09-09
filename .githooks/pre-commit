@@ -1,0 +1,57 @@
+#!/bin/sh
+# Keeps the R2 bucket and assets-manifest.json in step with site/assets/ on every
+# commit. A non-zero exit from sync aborts the commit.
+#
+# Enable per machine (SETUP.md §6):  git config core.hooksPath .githooks
+# Bypass when you must:              git commit --no-verify
+#
+# node is resolved explicitly rather than trusted from PATH. Git hooks inherit
+# the environment of whatever invoked git, and nvm is a shell function defined
+# in .zshrc — so it exists only in interactive shells. A GUI git client would
+# otherwise find no node at all and the hook would silently fail to guard the
+# bucket.
+
+set -e
+
+cd "$(git rev-parse --show-toplevel)"
+
+# Prefer the version pinned in .nvmrc, taken straight from nvm's install dir.
+# Reading the path directly avoids sourcing nvm.sh, which is slow and assumes
+# a bash-compatible shell.
+NVM_ROOT="${NVM_DIR:-$HOME/.nvm}"
+if [ -r .nvmrc ]; then
+    PINNED="$(tr -d ' \t\n\r' < .nvmrc)"
+    if [ -x "$NVM_ROOT/versions/node/v$PINNED/bin/node" ]; then
+        PATH="$NVM_ROOT/versions/node/v$PINNED/bin:$PATH"
+        export PATH
+    fi
+fi
+
+# Fall back to any node on PATH — a different minor version still runs sync
+# correctly; the .nvmrc pin exists to match the Cloudflare Pages build image.
+if ! command -v node >/dev/null 2>&1; then
+    cat >&2 <<'EOF'
+
+pre-commit: no usable node found, so assets could not be synced.
+
+  The bucket may now be out of step with site/assets/, and committing anyway would
+  deploy against it. Either:
+
+    - install the pinned version:  nvm install
+    - or commit without syncing:   git commit --no-verify
+
+EOF
+    exit 1
+fi
+
+# Used by scripts/doctor.js to verify node resolution without running a sync.
+if [ -n "$PRECOMMIT_SELFTEST" ]; then
+    echo "$(command -v node) $(node -v)"
+    exit 0
+fi
+
+node scripts/sync.js || exit 1
+
+# sync regenerates the manifest; without staging it the change would land in
+# the *next* commit, one behind the bucket it describes.
+git add assets-manifest.json

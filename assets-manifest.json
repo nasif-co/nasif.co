@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "recipeVersion": 2,
+  "images": {
+    "500x400.png": {
+      "hash": "738f1d48",
+      "width": 500,
+      "height": 400,
+      "variants": [
+        {
+          "w": 500,
+          "key": "500x400-500.738f1d48.webp"
+        }
+      ]
+    },
+    "flatpack-side.jpg": {
+      "hash": "02c22fb9",
+      "width": 4032,
+      "height": 3024,
+      "variants": [
+        {
+          "w": 640,
+          "key": "flatpack-side-640.02c22fb9.webp"
+        },
+        {
+          "w": 960,
+          "key": "flatpack-side-960.02c22fb9.webp"
+        },
+        {
+          "w": 1440,
+          "key": "flatpack-side-1440.02c22fb9.webp"
+        },
+        {
+          "w": 2160,
+          "key": "flatpack-side-2160.02c22fb9.webp"
+        },
+        {
+          "w": 3200,
+          "key": "flatpack-side-3200.02c22fb9.webp"
+        }
+      ]
+    }
+  },
+  "videos": {
+    "loop.mp4": {
+      "hash": "76598a3f",
+      "width": 1920,
+      "height": 1080,
+      "key": "loop.76598a3f.mp4"
+    }
+  }
+}
