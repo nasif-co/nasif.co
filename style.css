@@ -142,9 +142,14 @@ p em {
 }
 
 .main-subtitle {
-    font-size: var(--fz-22pt);
+    font-size: var(--fz-45pt);
     font-weight: 400;
     line-height: 1.2em;
+}
+
+.main-subtitle a {
+    font-size: inherit;
+    text-decoration: underline;
 }
 
 .grid-subtitle {
@@ -193,7 +198,7 @@ address > * {
     }
 
     .main-subtitle {
-        font-size: var(--fz-20pt);
+        font-size: var(--fz-35pt);
     }
 }
 
@@ -209,6 +214,10 @@ address > * {
     .project-title {
         font-size: var(--fz-70pt);
     }
+
+    .main-subtitle {
+        font-size: var(--fz-30pt);
+    }
 }
 
 @media screen and (max-width: 820px) {
@@ -223,7 +232,7 @@ address > * {
     }
 
     .main-subtitle {
-        font-size: var(--fz-16pt);
+        font-size: var(--fz-26pt);
     }
 
     .project-title {
@@ -239,17 +248,29 @@ address > * {
     .nav-button {
         font-size: var(--fz-16pt);
     }
+
+    .main-subtitle {
+        font-size: var(--fz-22pt);
+    }
 }
 
 @media screen and (max-width: 475px) {
     .project-title {
         font-size: var(--fz-40pt);
     }
+
+    .main-subtitle {
+        font-size: var(--fz-20pt);
+    }
 }
 
 @media screen and (max-width: 400px) {
     .project-title {
         font-size: var(--fz-38pt);
+    }
+
+    .main-subtitle {
+        font-size: var(--fz-18pt);
     }
 }
 
