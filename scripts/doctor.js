@@ -103,8 +103,15 @@ await check("package.json declares the spec'd scripts and deps", () => {
   for (const s of ["sync", "build"]) {
     assert(pkg.scripts?.[s], `missing script: ${s}`);
   }
-  for (const d of ["sharp", "@aws-sdk/client-s3", "glob", "dotenv"]) {
-    assert(pkg.dependencies?.[d], `missing dependency: ${d}`);
+  /* The split is load-bearing. Cloudflare installs with --omit=dev, so
+     anything build.js reaches has to be a real dependency, and anything only
+     sync.js reaches must not be, or every deploy builds sharp for nothing. */
+  for (const d of ["glob", "dotenv"]) {
+    assert(pkg.dependencies?.[d], `build.js needs ${d} in dependencies`);
+  }
+  for (const d of ["sharp", "@aws-sdk/client-s3"]) {
+    assert(pkg.devDependencies?.[d], `${d} is sync-only, so it belongs in devDependencies`);
+    assert(!pkg.dependencies?.[d], `${d} in dependencies means it installs on every deploy`);
   }
 });
 

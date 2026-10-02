@@ -275,56 +275,6 @@
         }
       ]
     },
-    "pab.png": {
-      "hash": "19ff721c",
-      "width": 2822,
-      "height": 2038,
-      "variants": [
-        {
-          "w": 640,
-          "key": "pab-640.19ff721c.webp"
-        },
-        {
-          "w": 960,
-          "key": "pab-960.19ff721c.webp"
-        },
-        {
-          "w": 1440,
-          "key": "pab-1440.19ff721c.webp"
-        },
-        {
-          "w": 2160,
-          "key": "pab-2160.19ff721c.webp"
-        },
-        {
-          "w": 2822,
-          "key": "pab-2822.19ff721c.webp"
-        }
-      ]
-    },
-    "pavillion-banner.jpg": {
-      "hash": "71165a74",
-      "width": 2048,
-      "height": 1365,
-      "variants": [
-        {
-          "w": 640,
-          "key": "pavillion-banner-640.71165a74.webp"
-        },
-        {
-          "w": 960,
-          "key": "pavillion-banner-960.71165a74.webp"
-        },
-        {
-          "w": 1440,
-          "key": "pavillion-banner-1440.71165a74.webp"
-        },
-        {
-          "w": 2048,
-          "key": "pavillion-banner-2048.71165a74.webp"
-        }
-      ]
-    },
     "pavillion-brand.webp": {
       "hash": "69e3c96f",
       "width": 4116,

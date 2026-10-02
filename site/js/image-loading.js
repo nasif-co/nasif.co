@@ -76,9 +76,21 @@ function shouldForceImageLoad() {
     return !IMAGE_SLOW_CONNECTIONS.includes(connection.effectiveType);
 }
 
+/* The placeholder fills its wrapper, so the wrapper's box has to be this
+   element's box and nothing else. A parent holding other things as well is not
+   a wrapper, and marking it would be wrong twice over: the placeholder would
+   cover its siblings, and .media-loading's position:relative would make it the
+   containing block for any absolutely positioned descendant.
+
+   That second one is not hypothetical. The hero video's parent is the whole
+   <section class="project-hero">, which also contains .hero-meta and therefore
+   .bullet-track — so marking it moved the project bullet sideways by the width
+   of .main-content's padding until the poster finished loading. */
 function markWrapper(element, loading) {
     const wrapper = element.parentElement;
-    if (wrapper) wrapper.classList.toggle(IMAGE_LOADING_CLASS, loading);
+    if (!wrapper || wrapper.children.length !== 1) return;
+
+    wrapper.classList.toggle(IMAGE_LOADING_CLASS, loading);
 }
 
 /* Hides one element that has not arrived and arranges its fade. Idempotent, so
