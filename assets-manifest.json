@@ -1,52 +1,422 @@
 {
   "version": 1,
-  "recipeVersion": 2,
+  "recipeVersion": 3,
   "images": {
-    "500x400.png": {
-      "hash": "738f1d48",
-      "width": 500,
-      "height": 400,
-      "variants": [
-        {
-          "w": 500,
-          "key": "500x400-500.738f1d48.webp"
-        }
-      ]
-    },
-    "flatpack-side.jpg": {
-      "hash": "02c22fb9",
-      "width": 4032,
-      "height": 3024,
+    "finav-flatpack-side.jpg": {
+      "hash": "bf2ced87",
+      "width": 3252,
+      "height": 4338,
       "variants": [
         {
           "w": 640,
-          "key": "flatpack-side-640.02c22fb9.webp"
+          "key": "finav-flatpack-side-640.bf2ced87.webp"
         },
         {
           "w": 960,
-          "key": "flatpack-side-960.02c22fb9.webp"
+          "key": "finav-flatpack-side-960.bf2ced87.webp"
         },
         {
           "w": 1440,
-          "key": "flatpack-side-1440.02c22fb9.webp"
+          "key": "finav-flatpack-side-1440.bf2ced87.webp"
         },
         {
           "w": 2160,
-          "key": "flatpack-side-2160.02c22fb9.webp"
+          "key": "finav-flatpack-side-2160.bf2ced87.webp"
         },
         {
           "w": 3200,
-          "key": "flatpack-side-3200.02c22fb9.webp"
+          "key": "finav-flatpack-side-3200.bf2ced87.webp"
+        }
+      ]
+    },
+    "finav-flatpack.jpg": {
+      "hash": "831e0762",
+      "width": 7560,
+      "height": 5670,
+      "variants": [
+        {
+          "w": 640,
+          "key": "finav-flatpack-640.831e0762.webp"
+        },
+        {
+          "w": 960,
+          "key": "finav-flatpack-960.831e0762.webp"
+        },
+        {
+          "w": 1440,
+          "key": "finav-flatpack-1440.831e0762.webp"
+        },
+        {
+          "w": 2160,
+          "key": "finav-flatpack-2160.831e0762.webp"
+        },
+        {
+          "w": 3200,
+          "key": "finav-flatpack-3200.831e0762.webp"
+        }
+      ]
+    },
+    "finav-hero.jpg": {
+      "hash": "06857a8f",
+      "width": 6510,
+      "height": 3662,
+      "variants": [
+        {
+          "w": 640,
+          "key": "finav-hero-640.06857a8f.webp"
+        },
+        {
+          "w": 960,
+          "key": "finav-hero-960.06857a8f.webp"
+        },
+        {
+          "w": 1440,
+          "key": "finav-hero-1440.06857a8f.webp"
+        },
+        {
+          "w": 2160,
+          "key": "finav-hero-2160.06857a8f.webp"
+        },
+        {
+          "w": 3200,
+          "key": "finav-hero-3200.06857a8f.webp"
+        }
+      ]
+    },
+    "finav-innards.jpg": {
+      "hash": "a9ecba28",
+      "width": 4284,
+      "height": 2785,
+      "variants": [
+        {
+          "w": 640,
+          "key": "finav-innards-640.a9ecba28.webp"
+        },
+        {
+          "w": 960,
+          "key": "finav-innards-960.a9ecba28.webp"
+        },
+        {
+          "w": 1440,
+          "key": "finav-innards-1440.a9ecba28.webp"
+        },
+        {
+          "w": 2160,
+          "key": "finav-innards-2160.a9ecba28.webp"
+        },
+        {
+          "w": 3200,
+          "key": "finav-innards-3200.a9ecba28.webp"
+        }
+      ]
+    },
+    "finav-map.jpg": {
+      "hash": "d8b34348",
+      "width": 4000,
+      "height": 2002,
+      "variants": [
+        {
+          "w": 640,
+          "key": "finav-map-640.d8b34348.webp"
+        },
+        {
+          "w": 960,
+          "key": "finav-map-960.d8b34348.webp"
+        },
+        {
+          "w": 1440,
+          "key": "finav-map-1440.d8b34348.webp"
+        },
+        {
+          "w": 2160,
+          "key": "finav-map-2160.d8b34348.webp"
+        },
+        {
+          "w": 3200,
+          "key": "finav-map-3200.d8b34348.webp"
+        }
+      ]
+    },
+    "finav-network.jpg": {
+      "hash": "f0dce7c0",
+      "width": 1920,
+      "height": 1080,
+      "variants": [
+        {
+          "w": 640,
+          "key": "finav-network-640.f0dce7c0.webp"
+        },
+        {
+          "w": 960,
+          "key": "finav-network-960.f0dce7c0.webp"
+        },
+        {
+          "w": 1440,
+          "key": "finav-network-1440.f0dce7c0.webp"
+        },
+        {
+          "w": 1920,
+          "key": "finav-network-1920.f0dce7c0.webp"
+        }
+      ]
+    },
+    "finav-pcb-closeup.jpg": {
+      "hash": "1eda0b6d",
+      "width": 915,
+      "height": 1098,
+      "variants": [
+        {
+          "w": 640,
+          "key": "finav-pcb-closeup-640.1eda0b6d.webp"
+        },
+        {
+          "w": 915,
+          "key": "finav-pcb-closeup-915.1eda0b6d.webp"
+        }
+      ]
+    },
+    "finav-side.jpg": {
+      "hash": "ee888a60",
+      "width": 6000,
+      "height": 4000,
+      "variants": [
+        {
+          "w": 640,
+          "key": "finav-side-640.ee888a60.webp"
+        },
+        {
+          "w": 960,
+          "key": "finav-side-960.ee888a60.webp"
+        },
+        {
+          "w": 1440,
+          "key": "finav-side-1440.ee888a60.webp"
+        },
+        {
+          "w": 2160,
+          "key": "finav-side-2160.ee888a60.webp"
+        },
+        {
+          "w": 3200,
+          "key": "finav-side-3200.ee888a60.webp"
+        }
+      ]
+    },
+    "finav-sketch01.jpg": {
+      "hash": "66685bfd",
+      "width": 3024,
+      "height": 2299,
+      "variants": [
+        {
+          "w": 640,
+          "key": "finav-sketch01-640.66685bfd.webp"
+        },
+        {
+          "w": 960,
+          "key": "finav-sketch01-960.66685bfd.webp"
+        },
+        {
+          "w": 1440,
+          "key": "finav-sketch01-1440.66685bfd.webp"
+        },
+        {
+          "w": 2160,
+          "key": "finav-sketch01-2160.66685bfd.webp"
+        },
+        {
+          "w": 3024,
+          "key": "finav-sketch01-3024.66685bfd.webp"
+        }
+      ]
+    },
+    "vane-hero.jpg": {
+      "hash": "3c813040",
+      "width": 3453,
+      "height": 1998,
+      "variants": [
+        {
+          "w": 640,
+          "key": "vane-hero-640.3c813040.webp"
+        },
+        {
+          "w": 960,
+          "key": "vane-hero-960.3c813040.webp"
+        },
+        {
+          "w": 1440,
+          "key": "vane-hero-1440.3c813040.webp"
+        },
+        {
+          "w": 2160,
+          "key": "vane-hero-2160.3c813040.webp"
+        },
+        {
+          "w": 3200,
+          "key": "vane-hero-3200.3c813040.webp"
+        }
+      ]
+    },
+    "vane-inner.jpg": {
+      "hash": "059e5de1",
+      "width": 5673,
+      "height": 6569,
+      "variants": [
+        {
+          "w": 640,
+          "key": "vane-inner-640.059e5de1.webp"
+        },
+        {
+          "w": 960,
+          "key": "vane-inner-960.059e5de1.webp"
+        },
+        {
+          "w": 1440,
+          "key": "vane-inner-1440.059e5de1.webp"
+        },
+        {
+          "w": 2160,
+          "key": "vane-inner-2160.059e5de1.webp"
+        },
+        {
+          "w": 3200,
+          "key": "vane-inner-3200.059e5de1.webp"
+        }
+      ]
+    },
+    "vane-sketch.jpg": {
+      "hash": "488171cb",
+      "width": 4734,
+      "height": 5484,
+      "variants": [
+        {
+          "w": 640,
+          "key": "vane-sketch-640.488171cb.webp"
+        },
+        {
+          "w": 960,
+          "key": "vane-sketch-960.488171cb.webp"
+        },
+        {
+          "w": 1440,
+          "key": "vane-sketch-1440.488171cb.webp"
+        },
+        {
+          "w": 2160,
+          "key": "vane-sketch-2160.488171cb.webp"
+        },
+        {
+          "w": 3200,
+          "key": "vane-sketch-3200.488171cb.webp"
         }
       ]
     }
   },
   "videos": {
-    "loop.mp4": {
-      "hash": "76598a3f",
+    "finav-build.mp4": {
+      "hash": "d6871bd6",
+      "width": 3840,
+      "height": 2160,
+      "variants": [
+        {
+          "w": 1920,
+          "media": null,
+          "key": "finav-build-1920.d6871bd6.mp4"
+        },
+        {
+          "w": 3200,
+          "media": "(min-resolution: 2dppx) and (min-width: 800px), (min-width: 1800px)",
+          "key": "finav-build-3200.d6871bd6.mp4"
+        }
+      ],
+      "poster": {
+        "key": "finav-build-poster.aee1d899.webp",
+        "frame": 0
+      }
+    },
+    "finav-data.mov": {
+      "hash": "b725ada2",
+      "width": 2872,
+      "height": 1788,
+      "variants": [
+        {
+          "w": 1920,
+          "media": null,
+          "key": "finav-data-1920.b725ada2.mp4"
+        }
+      ],
+      "poster": {
+        "key": "finav-data-poster.8ce95296.webp",
+        "frame": 0
+      }
+    },
+    "finav-demo.mp4": {
+      "hash": "abbaae7e",
       "width": 1920,
       "height": 1080,
-      "key": "loop.76598a3f.mp4"
+      "variants": [
+        {
+          "w": 1920,
+          "media": null,
+          "key": "finav-demo-1920.abbaae7e.mp4"
+        }
+      ],
+      "poster": {
+        "key": "finav-demo-poster.cfc81aa7.webp",
+        "frame": 0
+      }
+    },
+    "finav-loop-4k.mp4": {
+      "hash": "e710ae27",
+      "width": 3840,
+      "height": 2160,
+      "variants": [
+        {
+          "w": 1920,
+          "media": null,
+          "key": "finav-loop-4k-1920.e710ae27.mp4"
+        },
+        {
+          "w": 3200,
+          "media": "(min-resolution: 2dppx) and (min-width: 800px), (min-width: 1800px)",
+          "key": "finav-loop-4k-3200.e710ae27.mp4"
+        }
+      ],
+      "poster": {
+        "key": "finav-loop-4k-poster.3bb26bde.webp",
+        "frame": 0
+      }
+    },
+    "finav-loop.mp4": {
+      "hash": "0f000a9e",
+      "width": 1920,
+      "height": 1080,
+      "variants": [
+        {
+          "w": 1920,
+          "media": null,
+          "key": "finav-loop-1920.0f000a9e.mp4"
+        }
+      ],
+      "poster": {
+        "key": "finav-loop-poster.c5425649.webp",
+        "frame": 0
+      }
+    },
+    "finav-plug-in.mp4": {
+      "hash": "7788b786",
+      "width": 1920,
+      "height": 1080,
+      "variants": [
+        {
+          "w": 1920,
+          "media": null,
+          "key": "finav-plug-in-1920.7788b786.mp4"
+        }
+      ],
+      "poster": {
+        "key": "finav-plug-in-poster.ea1fcee4.webp",
+        "frame": 0
+      }
     }
   }
 }

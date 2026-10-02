@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="project-html" lang="en" style="--project-color: #FF6600">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +16,7 @@
 </head>
 <body>
     <div data-barba="wrapper">
-        <div data-barba="container" data-barba-namespace="work">
+        <div data-barba="container" data-barba-namespace="work" style="--project-color: #FF6600">
             <main class="main-content project-content">
                 <section class="project-hero">
                     <video src="/assets/finav-loop-4k.mp4" class="hero" data-large autoplay muted loop playsinline></video>
@@ -31,32 +31,60 @@
                 <section class="project-info">
                     <div class="project-summary">
                         <h2 class="project-subtitle">Summary</h2>
-                        <p class="project-description">A network visualization instrument that functions simultaneously as a home internet router and as a research device. By visualizing and recording network connections in real time, it seeks to render the normally invisible operations of internet infrastructure both perceptible and subject to scrutiny.</p>
+                        <p class="project-description">A network visualization instrument that functions simultaneously as an internet router and as a research device. Meant as a replacement for the home router, this tool connects our devices to the internet, while simultaneously mapping the servers we contact in real time. By doing so, it makes the invisible operations of the internet infrastructure both perceptible and subject to scrutiny.</p>
+                        <p class="project-description">Developed as a Master's Thesis at NYU Tisch School of The Arts Interactive Telecommunications Program.</p>
                     </div>
                     <div class="project-context">
                         <h2 class="project-subtitle">Year</h2>
                         <p class="project-origin">2026</p>
                     </div>
                     <ul class="project-links">
-                        <h2 class="project-subtitle">Links & Press</h2>
-                        <li><a href="https://www.nasif.co" target="_blank" data-tippy-content="Open in new tab">Website</a></li>
+                        <h2 class="project-subtitle">Links</h2>
+                        <li><a href="https://itp.nyu.edu/thesis/archive/2026/12185-nasif-rincon-romaite/" target="_blank" data-tippy-content="Open in new tab">ITP Thesis Archive Entry</a></li>
+                        <li><a href="https://vimeo.com/1190839735" target="_blank" data-tippy-content="Open in new tab">Thesis Presentation</a></li>
                     </ul>
                 </section>
                 <section class="project-study">
                     <figure>
-                        <video width="1920" height="1080" src="/assets/finav-plug-in.mp4" class="aspect-1-1" autoplay muted loop playsinline></video>
+                        <video src="/assets/finav-plug-in.mp4" class="aspect-1-1" autoplay muted loop playsinline></video>
                     </figure>
                     <figure>
-                        <img width="1920" height="1080" loading="lazy" src="/assets/finav-network.jpg" class="aspect-1-1">
+                        <img loading="lazy" src="/assets/finav-network.jpg" class="aspect-1-1">
                     </figure>
-                    <p>When connected to the internet over a network cable, the navigator creates its own WiFi Hotspot.</p>
+                    <p>When connected to the internet over a network cable, the navigator broadcasts its own WiFi Hotspot.</p>
                     <p>Phones, laptops, TVs and other wifi-enabled devices can connect to this network and browse the web.</p>
                     <figure class="double-wide">
-                        <video src="/assets/finav-demo.mp4" autoplay muted loop playsinline></video>
+                        <video class="mobile-6-5" src="/assets/finav-demo.mp4" autoplay muted loop playsinline></video>
                     </figure>
-                    <p class="double-column">Internet connections made by these devices are then geolocalized, by spinning the globe until the indicator arm points to the location of the server that answered the user's request. Simultaneously, the orange lines and points map the internet infrastructure: land fiber, interoceanic cables and internet exchange points of varying sizes.</p>
+                    <p class="double-column">As they do, these smart devices connect to different servers in places like data centers, server farms or internet exchange points. The navigator observes these connections in real time and displays the location of the computer that responded to them on a motorized globe. These locations are provided by a geoIP database, which maps IP addresses to latitudes and longitudes.</p>
                     <figure class="double-wide">
-                        <img width="7560" height="5670" loading="lazy" src="/assets/finav-flatpack.jpg">
+                        <img loading="lazy" src="/assets/finav-map.jpg">
+                    </figure>
+                    <p class="double-column">The map over which these connections are geolocalized is a visualization of the global internet infrastructure. The lines indicate cables, while the points represent major exchange facilities. Combining open maps like the Open Infrastructure Map, PeeringDB and the ITU Broadband map, this resulting graphic approximates the real infrastructure, but is still missing proprietary data.</p>
+                    <figure>
+                        <video src="/assets/finav-data.mov" style="object-position: left;" class="aspect-1-1" autoplay muted loop playsinline></video>
+                    </figure>
+                    <figure>
+                        <img src="/assets/finav-side.jpg" class="aspect-1-1" loading="lazy">
+                    </figure>
+                    <p>After geolocating, connections are logged locally for later analysis.</p>
+                    <p>The internet is physical. By using the Fiber Navigator, this physicality becomes apparent in our routines. It affords us to question and scrutinize the impact of this infrastructure, and the ways we encounter it.</p>
+                    <figure class="double-wide">
+                        <img loading="lazy" src="/assets/finav-flatpack.jpg">
+                    </figure>
+                    <figure>
+                        <img class="aspect-7-5" src="https://static.righto.com/images/globus-overview/opened.jpg" loading="lazy">
+                    </figure>
+                    <figure>
+                        <img class="aspect-7-5" src="/assets/finav-innards.jpg" loading="lazy">
+                    </figure>
+                    <p>The Fiber Navigator was inspired by the 1960's INK Globus Navigator used in the Soviet space flights. (Pictured on the left, photo by Ken Shirrif)</p>
+                    <p>Used by astronauts to track their location over earth, now a similar form factor is to be used by internauts in keeping track of their location on the network.</p>
+                    <figure class="mobile-double-wide">
+                        <img src="/assets/finav-sketch01.jpg" loading="lazy" alt="">
+                    </figure>
+                    <figure class="mobile-double-wide">
+                        <video src="/assets/finav-build.mp4" class="aspect-6-5" autoplay muted loop playsinline></video>
                     </figure>
                 </section>
             </main>
