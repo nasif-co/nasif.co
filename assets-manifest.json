@@ -2,6 +2,52 @@
   "version": 1,
   "recipeVersion": 3,
   "images": {
+    "arqdis-home.jpg": {
+      "hash": "5f44a362",
+      "width": 1920,
+      "height": 1080,
+      "variants": [
+        {
+          "w": 640,
+          "key": "arqdis-home-640.5f44a362.webp"
+        },
+        {
+          "w": 960,
+          "key": "arqdis-home-960.5f44a362.webp"
+        },
+        {
+          "w": 1440,
+          "key": "arqdis-home-1440.5f44a362.webp"
+        },
+        {
+          "w": 1920,
+          "key": "arqdis-home-1920.5f44a362.webp"
+        }
+      ]
+    },
+    "arqdis-mobile-showcase.jpg": {
+      "hash": "34641c15",
+      "width": 2400,
+      "height": 1350,
+      "variants": [
+        {
+          "w": 640,
+          "key": "arqdis-mobile-showcase-640.34641c15.webp"
+        },
+        {
+          "w": 960,
+          "key": "arqdis-mobile-showcase-960.34641c15.webp"
+        },
+        {
+          "w": 1440,
+          "key": "arqdis-mobile-showcase-1440.34641c15.webp"
+        },
+        {
+          "w": 2400,
+          "key": "arqdis-mobile-showcase-2400.34641c15.webp"
+        }
+      ]
+    },
     "finav-flatpack-side.jpg": {
       "hash": "bf2ced87",
       "width": 3252,
@@ -229,6 +275,83 @@
         }
       ]
     },
+    "pab.png": {
+      "hash": "19ff721c",
+      "width": 2822,
+      "height": 2038,
+      "variants": [
+        {
+          "w": 640,
+          "key": "pab-640.19ff721c.webp"
+        },
+        {
+          "w": 960,
+          "key": "pab-960.19ff721c.webp"
+        },
+        {
+          "w": 1440,
+          "key": "pab-1440.19ff721c.webp"
+        },
+        {
+          "w": 2160,
+          "key": "pab-2160.19ff721c.webp"
+        },
+        {
+          "w": 2822,
+          "key": "pab-2822.19ff721c.webp"
+        }
+      ]
+    },
+    "pavillion-banner.jpg": {
+      "hash": "71165a74",
+      "width": 2048,
+      "height": 1365,
+      "variants": [
+        {
+          "w": 640,
+          "key": "pavillion-banner-640.71165a74.webp"
+        },
+        {
+          "w": 960,
+          "key": "pavillion-banner-960.71165a74.webp"
+        },
+        {
+          "w": 1440,
+          "key": "pavillion-banner-1440.71165a74.webp"
+        },
+        {
+          "w": 2048,
+          "key": "pavillion-banner-2048.71165a74.webp"
+        }
+      ]
+    },
+    "pavillion-brand.webp": {
+      "hash": "69e3c96f",
+      "width": 4116,
+      "height": 3600,
+      "variants": [
+        {
+          "w": 640,
+          "key": "pavillion-brand-640.69e3c96f.webp"
+        },
+        {
+          "w": 960,
+          "key": "pavillion-brand-960.69e3c96f.webp"
+        },
+        {
+          "w": 1440,
+          "key": "pavillion-brand-1440.69e3c96f.webp"
+        },
+        {
+          "w": 2160,
+          "key": "pavillion-brand-2160.69e3c96f.webp"
+        },
+        {
+          "w": 3200,
+          "key": "pavillion-brand-3200.69e3c96f.webp"
+        }
+      ]
+    },
     "vane-hero.jpg": {
       "hash": "3c813040",
       "width": 3453,
@@ -312,6 +435,22 @@
     }
   },
   "videos": {
+    "arqdis-investigaciones.mov": {
+      "hash": "a2b0ccc6",
+      "width": 2634,
+      "height": 1970,
+      "variants": [
+        {
+          "w": 1920,
+          "media": null,
+          "key": "arqdis-investigaciones-1920.a2b0ccc6.mp4"
+        }
+      ],
+      "poster": {
+        "key": "arqdis-investigaciones-poster.08023d74.webp",
+        "frame": 0
+      }
+    },
     "finav-build.mp4": {
       "hash": "d6871bd6",
       "width": 3840,
@@ -386,22 +525,6 @@
         "frame": 0
       }
     },
-    "finav-loop.mp4": {
-      "hash": "0f000a9e",
-      "width": 1920,
-      "height": 1080,
-      "variants": [
-        {
-          "w": 1920,
-          "media": null,
-          "key": "finav-loop-1920.0f000a9e.mp4"
-        }
-      ],
-      "poster": {
-        "key": "finav-loop-poster.c5425649.webp",
-        "frame": 0
-      }
-    },
     "finav-plug-in.mp4": {
       "hash": "7788b786",
       "width": 1920,
@@ -415,6 +538,38 @@
       ],
       "poster": {
         "key": "finav-plug-in-poster.ea1fcee4.webp",
+        "frame": 0
+      }
+    },
+    "pavillion-expose.mov": {
+      "hash": "ae90557a",
+      "width": 1600,
+      "height": 1600,
+      "variants": [
+        {
+          "w": 1600,
+          "media": null,
+          "key": "pavillion-expose-1600.ae90557a.mp4"
+        }
+      ],
+      "poster": {
+        "key": "pavillion-expose-poster.770614a6.webp",
+        "frame": 0
+      }
+    },
+    "pavillion-mobile.mp4": {
+      "hash": "0cfcf32b",
+      "width": 2848,
+      "height": 1962,
+      "variants": [
+        {
+          "w": 1920,
+          "media": null,
+          "key": "pavillion-mobile-1920.0cfcf32b.mp4"
+        }
+      ],
+      "poster": {
+        "key": "pavillion-mobile-poster.3fa20dfc.webp",
         "frame": 0
       }
     }
