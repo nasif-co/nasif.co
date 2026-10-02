@@ -172,6 +172,7 @@ class DebugPanel {
 class Page {
 
     constructor() {
+        this.emailProtection = new EmailProtection();
         this.bannerReveal = new BannerReveal();
         this.bannerLag = new ScrollLag(BANNER_LAG_TARGET);
         this.bulletLag = new ScrollLag(BULLET_LAG_TARGET);
@@ -182,6 +183,9 @@ class Page {
         this.imageLoading = new ImageLoading();
 
         this.features = [
+            // First: it repairs the markup the others then read.
+            this.emailProtection,
+
             this.bannerReveal,
             this.bannerLag,
             this.bulletLag,
