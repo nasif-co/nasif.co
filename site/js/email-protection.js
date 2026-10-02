@@ -22,6 +22,21 @@
 const CF_EMAIL_CLASS = '__cf_email__';
 const CF_EMAIL_HREF = '/cdn-cgi/l/email-protection';
 
+/* Where the hex ends up depends on how the address was written. Plain text
+   gets it as an attribute on the placeholder; a mailto link keeps it in the
+   link's own URL instead, and the placeholder may then carry nothing. Both are
+   tried for every placeholder, since either form can appear. */
+function hexFromHref(link) {
+    return (link.getAttribute('href') || '').split('#')[1] || null;
+}
+
+function hexFor(element) {
+    if (element.dataset.cfemail) return element.dataset.cfemail;
+
+    const link = element.closest(`a[href*="${CF_EMAIL_HREF}"]`);
+    return link ? hexFromHref(link) : null;
+}
+
 /** Returns the address, or null if the hex is not what we expect. */
 function decodeCloudflareEmail(hex) {
     if (!hex || hex.length < 4 || hex.length % 2 !== 0) return null;
@@ -50,15 +65,19 @@ class EmailProtection {
         /* Replaced by a plain text node rather than filled in, so the markup
            ends up as it was written and button.textContent is the address. */
         root.querySelectorAll(`.${CF_EMAIL_CLASS}`).forEach((placeholder) => {
-            const address = decodeCloudflareEmail(placeholder.dataset.cfemail);
+            const address = decodeCloudflareEmail(hexFor(placeholder));
             if (address) placeholder.replaceWith(document.createTextNode(address));
         });
 
-        /* A mailto link has its address moved into the fragment instead. None
-           on the site yet, but one added later would break the same way. */
+        // A mailto link also has its address taken out of the href.
         root.querySelectorAll(`a[href*="${CF_EMAIL_HREF}"]`).forEach((link) => {
-            const address = decodeCloudflareEmail(link.getAttribute('href').split('#')[1]);
-            if (address) link.setAttribute('href', `mailto:${address}`);
+            const address = decodeCloudflareEmail(hexFromHref(link));
+            if (!address) return;
+
+            link.setAttribute('href', `mailto:${address}`);
+
+            // Its own text is the placeholder too, unless the pass above got it.
+            if (!link.textContent.includes('@')) link.textContent = address;
         });
     }
 
