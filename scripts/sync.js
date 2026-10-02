@@ -10,14 +10,27 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 
-import { computeImageLadder, serializeRecipe, IMAGE_RECIPE, VIDEO_RECIPE } from "./lib/recipe.js";
+import { glob } from "glob";
+
+import {
+  computeImageLadder, computeVideoLadder,
+  serializeImageRecipe, serializeVideoRecipe, serializePosterRecipe,
+  IMAGE_RECIPE, VIDEO_RECIPE, POSTER_RECIPE,
+} from "./lib/recipe.js";
 import { computeAssetHash } from "./lib/hash.js";
 import { readManifest, writeManifest } from "./lib/manifest.js";
 import { createR2Client, listAllKeys, putDerivative, deleteKeys } from "./lib/r2Client.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const SOURCE_DIR = path.join(root, "site", "assets");
+const SITE_DIR = path.join(root, "site");
+const SOURCE_DIR = path.join(SITE_DIR, "assets");
 const BUILD_DIR = path.join(root, ".assets-build");
+
+// The literal prefix authors write, matching build.js.
+const ASSET_PREFIX = "/assets/";
+
+// Room for one decoded frame as PNG. A 4K frame is around 25 MB.
+const POSTER_MAX_BUFFER_BYTES = 128 * 1024 * 1024;
 
 // How the source directory is written in messages, relative to the repo root.
 const SOURCE_LABEL = "site/assets";
@@ -99,6 +112,52 @@ async function scanSources() {
   return sources.sort((a, b) => a.filename.localeCompare(b.filename));
 }
 
+/**
+ * Which frame each video wants for its poster, from data-post-frame in the
+ * HTML. That attribute belongs next to the content it describes, but the
+ * poster has to be made here, where ffmpeg is — so this is the one place sync
+ * looks outside site/assets/. Videos with no attribute use the default frame.
+ */
+async function scanPosterFrames() {
+  const frames = new Map();
+  const files = (await glob("**/*.html", { cwd: SITE_DIR, nodir: true })).sort();
+
+  for (const file of files) {
+    const html = await readFile(path.join(SITE_DIR, file), "utf8");
+
+    for (const [, attrText, inner] of html.matchAll(/<video\b([^>]*)>([\s\S]*?)<\/video>/gi)) {
+      const frame = attrText.match(/\bdata-post-frame\s*=\s*"([^"]*)"/i)?.[1];
+      if (frame === undefined) continue;
+
+      // The src sits on the <video> in one form and on a <source> in the other.
+      const src =
+        attrText.match(/\bsrc\s*=\s*"([^"]*)"/i)?.[1] ??
+        inner.match(/<source\b[^>]*?\bsrc\s*=\s*"([^"]*)"/i)?.[1];
+
+      if (!src?.startsWith(ASSET_PREFIX)) continue;
+
+      const filename = src.slice(ASSET_PREFIX.length);
+      const value = Number(frame);
+
+      if (!Number.isInteger(value) || value < 0) {
+        fail(`site/${file} — data-post-frame="${frame}" must be a whole frame number, counting from 0.`);
+      }
+
+      const already = frames.get(filename);
+      if (already !== undefined && already !== value) {
+        fail(
+          `${filename} is asked for two different poster frames: ${already} and ${value}.\n  ` +
+            `A video has one poster, so the frame has to be the same everywhere it appears.`
+        );
+      }
+
+      frames.set(filename, value);
+    }
+  }
+
+  return frames;
+}
+
 /** Post-EXIF-rotation dimensions, i.e. how the image actually displays. */
 function orientedSize(meta) {
   const swapped = [5, 6, 7, 8].includes(meta.orientation);
@@ -150,61 +209,130 @@ function probeVideo(absPath) {
   };
 }
 
-async function encodeVideo(source, hash) {
+async function encodeVideo(source, hash, poster) {
   const { width, height, hasAudio } = probeVideo(source.absPath);
-  const key = `${source.stem}.${hash}.${VIDEO_RECIPE.container}`;
+  const variants = [];
+
+  for (const rung of computeVideoLadder(width)) {
+    const key = `${source.stem}-${rung.width}.${hash}.${VIDEO_RECIPE.container}`;
+    const outPath = path.join(BUILD_DIR, key);
+
+    if (!existsSync(outPath)) {
+      // The source decides: audio is re-encoded if it exists, dropped if not.
+      // Because the decision follows the source bytes, it is already covered by
+      // the asset hash.
+      const audioArgs = hasAudio
+        ? ["-c:a", VIDEO_RECIPE.audioCodec, "-b:a", VIDEO_RECIPE.audioBitrate]
+        : ["-an"];
+
+      // -2 keeps the height even, which H.264 requires. Skipped entirely at
+      // native width, so an odd-sized source is never nudged.
+      const scaleArgs = rung.width === width ? [] : ["-vf", `scale=${rung.width}:-2`];
+
+      execFileSync(
+        "ffmpeg",
+        ["-y", "-v", "error", "-i", source.absPath,
+         ...scaleArgs,
+         "-c:v", VIDEO_RECIPE.videoCodec, ...VIDEO_RECIPE.ffmpegFlags, ...audioArgs, outPath],
+        { stdio: ["ignore", "ignore", "pipe"] }
+      );
+      note(`  encoded  ${key}${hasAudio ? "  (audio kept)" : ""}`);
+    }
+
+    variants.push({ w: rung.width, media: rung.media, key });
+  }
+
+  return { hash, width, height, variants, poster: await encodePoster(source, poster, width) };
+}
+
+/** One still, shown until the first frame decodes. Hashed on its own so that
+    changing data-post-frame re-extracts it without re-encoding the video. */
+async function encodePoster(source, poster, sourceWidth) {
+  const key = `${source.stem}-poster.${poster.hash}.${POSTER_RECIPE.format}`;
   const outPath = path.join(BUILD_DIR, key);
 
   if (!existsSync(outPath)) {
-    // The source decides: audio is re-encoded if it exists, dropped if not.
-    // Because the decision follows the source bytes, it is already covered by
-    // the asset hash.
-    const audioArgs = hasAudio
-      ? ["-c:a", VIDEO_RECIPE.audioCodec, "-b:a", VIDEO_RECIPE.audioBitrate]
-      : ["-an"];
-
-    execFileSync(
+    /* select= decodes forward rather than seeking, which is frame accurate
+       where -ss would land on the nearest keyframe. These are short clips, so
+       the cost is small. The comma is escaped for ffmpeg's own filter parser,
+       not for a shell — there is no shell here. */
+    const frame = execFileSync(
       "ffmpeg",
-      ["-y", "-v", "error", "-i", source.absPath,
-       "-c:v", VIDEO_RECIPE.videoCodec, ...VIDEO_RECIPE.ffmpegFlags, ...audioArgs, outPath],
-      { stdio: ["ignore", "ignore", "pipe"] }
+      ["-v", "error", "-i", source.absPath,
+       "-vf", `select=eq(n\\,${poster.frame})`,
+       "-frames:v", "1", "-f", "image2", "-vcodec", "png", "-"],
+      { maxBuffer: POSTER_MAX_BUFFER_BYTES }
     );
-    note(`  encoded  ${key}${hasAudio ? "  (audio kept)" : ""}`);
+
+    if (frame.length === 0) {
+      fail(
+        `${SOURCE_LABEL}/${source.filename} has no frame ${poster.frame}.\n  ` +
+          `data-post-frame is past the end of the clip.`
+      );
+    }
+
+    await sharp(frame)
+      .resize({ width: Math.min(POSTER_RECIPE.width, sourceWidth), withoutEnlargement: true })
+      .webp({ quality: POSTER_RECIPE.quality })
+      .toFile(outPath);
+
+    note(`  encoded  ${key}  (frame ${poster.frame})`);
   }
 
-  return { hash, width, height, key };
+  return { key, frame: poster.frame };
 }
 
 /** Every derivative key a manifest entry refers to. */
 function keysOf(entry) {
-  return entry.variants ? entry.variants.map((v) => v.key) : [entry.key];
+  const keys = entry.variants ? entry.variants.map((v) => v.key) : [entry.key];
+  if (entry.poster) keys.push(entry.poster.key);
+  return keys;
 }
 
 async function main() {
   await mkdir(BUILD_DIR, { recursive: true });
 
   const sources = await scanSources();
-  const recipe = serializeRecipe();
+  const posterFrames = await scanPosterFrames();
+
+  // Separate recipes, so tuning video does not re-encode every image.
+  const imageRecipe = serializeImageRecipe();
+  const videoRecipe = serializeVideoRecipe();
+
   const previous = await readManifest();
   const manifest = { version: 1, images: {}, videos: {} };
 
   // ── Encode (steps 4-5) ──────────────────────────────────────────────────
   for (const source of sources) {
     const bytes = await readFile(source.absPath);
-    const hash = computeAssetHash(bytes, recipe);
-    const bucket = source.type === "image" ? "images" : "videos";
+    const isImage = source.type === "image";
+    const bucket = isImage ? "images" : "videos";
+
+    const hash = computeAssetHash(bytes, isImage ? imageRecipe : videoRecipe);
     const prior = previous[bucket]?.[source.filename];
 
-    // Unchanged source and recipe, and every derivative still on disk.
-    if (prior?.hash === hash && keysOf(prior).every((k) => existsSync(path.join(BUILD_DIR, k)))) {
+    const poster = isImage
+      ? null
+      : (() => {
+          const frame = posterFrames.get(source.filename) ?? POSTER_RECIPE.defaultFrame;
+          return { frame, hash: computeAssetHash(bytes, serializePosterRecipe(frame)) };
+        })();
+
+    // Unchanged source, recipe and poster frame, and every derivative on disk.
+    const posterUnchanged = isImage || prior?.poster?.frame === poster.frame;
+
+    if (
+      prior?.hash === hash &&
+      posterUnchanged &&
+      keysOf(prior).every((k) => existsSync(path.join(BUILD_DIR, k)))
+    ) {
       manifest[bucket][source.filename] = prior;
       continue;
     }
 
-    manifest[bucket][source.filename] =
-      source.type === "image"
-        ? await encodeImage(source, hash)
-        : await encodeVideo(source, hash);
+    manifest[bucket][source.filename] = isImage
+      ? await encodeImage(source, hash)
+      : await encodeVideo(source, hash, poster);
   }
 
   // The set .assets-build/ and the bucket should both contain, exactly.

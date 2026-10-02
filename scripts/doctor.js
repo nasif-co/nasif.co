@@ -111,8 +111,11 @@ await check("package.json declares the spec'd scripts and deps", () => {
 // ── Lib modules (Phase 2) ─────────────────────────────────────────────────
 section("Recipe & ladder");
 
-const { computeImageLadder, serializeRecipe, IMAGE_LADDER, RECIPE_VERSION } =
-  await import("./lib/recipe.js");
+const {
+  computeImageLadder, computeVideoLadder,
+  serializeImageRecipe, serializeVideoRecipe, serializePosterRecipe,
+  IMAGE_LADDER, VIDEO_LADDER, RECIPE_VERSION,
+} = await import("./lib/recipe.js");
 
 await check("spec example: 2400px source drops the 2160 rung", () => {
   eq(computeImageLadder(2400), [640, 960, 1440, 2400], "ladder(2400)");
@@ -152,9 +155,86 @@ await check("no ladder ever upscales", () => {
     eq(ladder, [...new Set(ladder)], `ladder(${w}) has duplicates`);
   }
 });
-await check("serializeRecipe is deterministic", () => {
-  eq(serializeRecipe(), serializeRecipe(), "two calls differ");
+await check("video ladder never upscales", () => {
+  for (const w of [640, 1280, 1919, 1920, 2560, 3199, 3200, 3840, 7680]) {
+    const rungs = computeVideoLadder(w);
+    assert(rungs.length > 0, `video ladder(${w}) is empty`);
+    assert(Math.max(...rungs.map((r) => r.width)) <= w, `video ladder(${w}) upscales`);
+  }
+});
+await check("only a source at or above the top rung earns both files", () => {
+  eq(computeVideoLadder(2560).map((r) => r.width), [1920], "2560 should stay single");
+  eq(computeVideoLadder(3200).map((r) => r.width), [1920, 3200], "3200 should offer both");
+  eq(computeVideoLadder(3840).map((r) => r.width), [1920, 3200], "3840 is capped at the ceiling");
+});
+await check("a source below the lowest rung keeps its own width", () => {
+  eq(computeVideoLadder(1280).map((r) => r.width), [1280], "video ladder(1280)");
+});
+await check("exactly one video rung is the unconditional default", () => {
+  const plain = VIDEO_LADDER.filter((r) => r.media === null);
+  eq(plain.length, 1, "a <source> list with no unconditional fallback can match nothing");
+  eq(plain[0], VIDEO_LADDER[0], "the fallback must be the smallest rung");
+});
+await check("recipes are deterministic and independent", () => {
+  eq(serializeImageRecipe(), serializeImageRecipe(), "image recipe differs between calls");
+  eq(serializeVideoRecipe(), serializeVideoRecipe(), "video recipe differs between calls");
+  assert(
+    serializeImageRecipe() !== serializeVideoRecipe(),
+    "image and video recipes are identical, so they would churn together"
+  );
   return `RECIPE_VERSION ${RECIPE_VERSION}`;
+});
+await check("poster recipe follows the chosen frame", () => {
+  assert(
+    serializePosterRecipe(0) !== serializePosterRecipe(120),
+    "changing data-post-frame would not re-extract the poster"
+  );
+});
+
+section("Sizes defaults");
+
+const { IMAGE_SIZES, defaultSizes } = await import("./lib/sizes.js");
+
+const lastClause = (value) => value.split(", ").pop();
+const minWidths = (value) =>
+  value.split(", ").map((c) => Number(c.match(/min-width:\s*(\d+)px/)?.[1] ?? NaN));
+
+await check("every string ends in a bare fallback length", () => {
+  // A media condition opens with a bracket; a calc() length opens with "c".
+  // A trailing condition would leave narrow viewports matching nothing.
+  for (const [name, value] of Object.entries(IMAGE_SIZES)) {
+    assert(!lastClause(value).startsWith("("), `${name} ends conditional: ${lastClause(value)}`);
+  }
+  return `${Object.keys(IMAGE_SIZES).length} strings`;
+});
+await check("min-width clauses descend, so the first match is the right one", () => {
+  for (const [name, value] of Object.entries(IMAGE_SIZES)) {
+    const widths = minWidths(value).filter((n) => !Number.isNaN(n));
+    eq(widths, [...widths].sort((a, b) => b - a), `${name} clauses are out of order`);
+  }
+});
+await check("the hero asks for more than a full width grid image", () => {
+  // It crops a 16:9 master into a 12:9 box, so its height decides.
+  assert(IMAGE_SIZES.hero !== IMAGE_SIZES.full, "hero and full are identical");
+  assert(IMAGE_SIZES.hero.includes("vh"), "hero has no height-based clause");
+});
+await check("context comes from the image's class and its wrapper's", () => {
+  eq(defaultSizes("hero", "<figure>"), IMAGE_SIZES.hero, "hero not read from its own class");
+  eq(defaultSizes("", '<a class="double-wide mobile-1-1">'), IMAGE_SIZES.full, "double-wide wrapper");
+  eq(defaultSizes("", '<figure class="double-wide">'), IMAGE_SIZES.full, "double-wide figure");
+  eq(defaultSizes("", "<figure>"), IMAGE_SIZES.half, "plain wrapper should be half");
+});
+await check("mobile-double-wide is not mistaken for double-wide", () => {
+  // Regression: \bdouble-wide\b matches inside it, a hyphen being a boundary.
+  eq(defaultSizes("", '<figure class="mobile-double-wide">'), IMAGE_SIZES.mobileFull);
+});
+await check("an unwrapped image overestimates rather than risking blur", () => {
+  eq(defaultSizes("", "<section>"), IMAGE_SIZES.full, "unknown context should be full width");
+  eq(defaultSizes("", ""), IMAGE_SIZES.full, "no preceding markup should be full width");
+});
+await check("the wrapper match is anchored to the tag before the image", () => {
+  // A double-wide ancestor must not leak into a plain image below it.
+  eq(defaultSizes("", '<div class="double-wide"><p>text</p><figure>'), IMAGE_SIZES.half);
 });
 
 section("Hashing");
@@ -162,24 +242,24 @@ section("Hashing");
 const { computeAssetHash } = await import("./lib/hash.js");
 
 await check("hash is stable for identical input", () => {
-  const a = computeAssetHash(Buffer.from("same"), serializeRecipe());
-  const b = computeAssetHash(Buffer.from("same"), serializeRecipe());
+  const a = computeAssetHash(Buffer.from("same"), serializeImageRecipe());
+  const b = computeAssetHash(Buffer.from("same"), serializeImageRecipe());
   eq(a, b, "same input hashed differently");
   return `${a} (${a.length} chars)`;
 });
 await check("hash length is 6-8 chars per spec §5", () => {
-  const h = computeAssetHash(Buffer.from("x"), serializeRecipe());
+  const h = computeAssetHash(Buffer.from("x"), serializeImageRecipe());
   assert(h.length >= 6 && h.length <= 8, `got ${h.length} chars`);
   assert(/^[0-9a-f]+$/.test(h), `not lowercase hex: ${h}`);
 });
 await check("hash changes when source bytes change", () => {
-  const a = computeAssetHash(Buffer.from("one"), serializeRecipe());
-  const b = computeAssetHash(Buffer.from("two"), serializeRecipe());
+  const a = computeAssetHash(Buffer.from("one"), serializeImageRecipe());
+  const b = computeAssetHash(Buffer.from("two"), serializeImageRecipe());
   assert(a !== b, "different sources produced the same hash");
 });
 await check("hash changes when the recipe changes", () => {
-  const a = computeAssetHash(Buffer.from("same"), serializeRecipe());
-  const b = computeAssetHash(Buffer.from("same"), serializeRecipe() + "-tweaked");
+  const a = computeAssetHash(Buffer.from("same"), serializeImageRecipe());
+  const b = computeAssetHash(Buffer.from("same"), serializeImageRecipe() + "-tweaked");
   assert(a !== b, "recipe change did not shift the hash (stale immutable URLs)");
 });
 
