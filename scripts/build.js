@@ -84,6 +84,14 @@ function pickFallback(variants) {
 }
 
 function transformHtml(html, file, manifest, env, referenced) {
+  /* Comments go first, before anything below looks at a tag.
+     Two reasons. They are notes to whoever edits site/, not something a
+     visitor needs. And the passes below match tags with regexes that know
+     nothing about comments, so a comment mentioning one would be read as the
+     real thing: a commented-out video tag matched as far as the next real
+     </video>, swallowing an actual src and leaving it unexpanded.
+     Deliberately not touching <!DOCTYPE>, which does not match. */
+  html = html.replace(/<!--[\s\S]*?-->/g, "");
   const url = (key) => `${env.assetBaseUrl}/${key}`;
 
   const lookup = (group, filename, tag) => {
