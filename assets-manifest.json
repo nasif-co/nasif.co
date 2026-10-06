@@ -522,6 +522,27 @@
         "key": "pavillion-mobile-poster.3fa20dfc.webp",
         "frame": 0
       }
+    },
+    "vane-homing.mp4": {
+      "hash": "fd543e0b",
+      "width": 3840,
+      "height": 2160,
+      "variants": [
+        {
+          "w": 1920,
+          "media": null,
+          "key": "vane-homing-1920.fd543e0b.mp4"
+        },
+        {
+          "w": 3200,
+          "media": "(min-resolution: 2dppx) and (min-width: 800px), (min-width: 1800px)",
+          "key": "vane-homing-3200.fd543e0b.mp4"
+        }
+      ],
+      "poster": {
+        "key": "vane-homing-poster.534f4c43.webp",
+        "frame": 269
+      }
     }
   }
 }

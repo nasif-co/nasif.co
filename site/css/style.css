@@ -66,7 +66,13 @@ button {
 /* Colors ------------------------------------------------------------------------------------------------- */
 * {
     --background: #e4e4e4;
+    --overlay-base: black;
     --overlay: rgba(0, 0, 0, 0.8);
+    --footer-background: #d5d5d5;
+    --hover-outline: #dadada;
+    --footer-overline: #7d7d7d;
+    --footer-legal: #a3a3a3;
+    --loading-placeholder: #a5a5a5;
 }
 
 html {
@@ -299,7 +305,7 @@ body {
     border-radius: var(--corner);
     overflow: hidden;
     transition: outline 0.3s;
-    outline: 0px solid #dadada;
+    outline: 0px solid var(--hover-outline);
     height: fit-content;
     vertical-align: middle;
 }
@@ -311,7 +317,7 @@ body {
 
 @media (pointer: fine) {
     .media a:hover {
-        outline: calc(0.5*var(--gap)) solid #dadada;
+        outline: calc(0.5*var(--gap)) solid var(--hover-outline);
     }
 }
 
@@ -580,7 +586,7 @@ body {
 }
 
 .banner-link {
-    background: #000000;
+    background: var(--overlay-base);
     height: 100%;
     width: calc(1.2*var(--banner-height));
     z-index: 1;
@@ -762,7 +768,7 @@ body {
 
 /* Footer ------------------------------------------------------------------------------------------ */
 .footer-block {
-    background: #d9d9d9;
+    background: var(--footer-background);
     border-radius: var(--corner);
     padding: 1.5rem 2rem;
     margin-bottom: 0.5rem;
@@ -782,7 +788,7 @@ button[data-click-copy] {
 .contact-point .label {
     --fsz: 18;
     text-transform: uppercase;
-    color: #7d7d7d;
+    color: var(--footer-overline);
     user-select: none;
     margin-bottom: 0.2em;
 }
@@ -793,7 +799,7 @@ button[data-click-copy] {
 
 .legal {
     --fsz: 15;
-    color: #a3a3a3;
+    color: var(--footer-legal);
     display: flex;
     gap: 1em;
 }
@@ -1398,7 +1404,7 @@ button[data-click-copy] {
     inset: 0;
     z-index: 1;
     border-radius: var(--corner);
-    background: #a5a5a5;
+    background: var(--loading-placeholder);
 
     /* Invisible until the delay has passed, so an image that arrives quickly
        never flashes a placeholder on its way in. */
